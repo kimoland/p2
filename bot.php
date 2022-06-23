@@ -51,17 +51,17 @@ if ($text == "/start") {
         
         bot('sendmessage', [
             'chat_id' => $chat_id,
- 'text'=>"Send GetProxy Or /get ",
+ 'text'=>"Use the following keyboard ",
  'reply_to_message_id' => $message_id2,
  'parse_mode'=>"html",
  'reply_markup'=>json_encode([
      'keyboard'=>[
-        [['text'=>"GetProxy"]]
+        [['text'=>"Fast"],['text'=>"Permanent"]]
              ],'resize_keyboard'=>true])
  ]); 
 }
 //===========================//
-if ($text == "GetProxy" || $text == "/get"){
+if ($text == "Fast" || $text == "/get"){
     bot('sendmessage',[
         'chat_id'=>$chat_id,
         'text'=>"➖➖➖➖➖➖➖➖➖➖➖
@@ -79,7 +79,7 @@ $proxy
  ]); 
 }
 //=====================//
-if ($text == "Fast" || $text == "/fast"){
+if ($text == "Permanent" || $text == "/fast"){
     bot('sendmessage',[
         'chat_id'=>$chat_id,
         'text'=>"➖➖➖➖➖➖➖➖➖➖➖
@@ -101,12 +101,12 @@ $proxy2
 if ($text == "Back"){
     bot('sendmessage',[
         'chat_id'=>$chat_id,
-        'text'=>"Send GetProxy Or /get",
+        'text'=>"Use the following keyboard",
         'reply_to_message_id' => $message_id2,
  'parse_mode'=>"MarkDown",
  'reply_markup'=>json_encode([
      'keyboard'=>[
-        [['text'=>"GetProxy"]]
+        [['text'=>"Fast"],['text'=>"Permanent"]]
         ],'resize_keyboard'=>true])
  ]); 
 }
