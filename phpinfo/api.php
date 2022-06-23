@@ -1,13 +1,5 @@
 <?php
 
-function decrypt($ciphertext, $key) {
-    $method = "AES-256-CBC";
-    $iv = '';
-    $hash = substr($ivHashCiphertext, 16, 32);
-   
-    return openssl_decrypt(base64_decode($ciphertext), $method, $key, OPENSSL_RAW_DATA, $iv);
-}
-
 $str = file_get_contents("https://dl.dropboxusercontent.com/s/dn0mdwhk7mjwa0k/novingram_server.json");
 $enc = json_decode($str,true)["login"];
 $key = substr(hash("sha256",substr($enc,strlen($enc) - 16)),0,32);
