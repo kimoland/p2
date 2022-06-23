@@ -33,9 +33,9 @@ $lastname = $message->from->last_name;
 $username = $message->from->username;
 $proxy = file_get_contents("https://proxykn7.herokuapp.com/proxy");
 $admin = 710732845;
-$prox=json_decode(file_get_contents("https://mtpro.xyz/api/?type=mtproto"),true);
 for ($i = 0; $i < 5;$i++)
 {
+	$prox=json_decode(file_get_contents("https://mtpro.xyz/api/?type=mtproto"),true);
 	$host=$prox['$i']['host'];
 	$port=$prox['$i']['port'];
 	$secret=$prox['$i']['secret'];
