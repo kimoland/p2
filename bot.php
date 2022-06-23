@@ -33,6 +33,7 @@ $lastname = $message->from->last_name;
 $username = $message->from->username;
 $proxy = file_get_contents("https://proxykn7.herokuapp.com/proxy");
 $proxy2 = file_get_contents("https://prox2d.herokuapp.com/phpinfo/api.php");
+$proxy3 = file_get_contents("https://prox2d.herokuapp.com/phpinfo/api2.php");
 $admin = 710732845;
 $message_id2 = $message->message_id;
 
@@ -56,7 +57,8 @@ if ($text == "/start") {
  'parse_mode'=>"html",
  'reply_markup'=>json_encode([
      'keyboard'=>[
-        [['text'=>"Fast"],['text'=>"Permanent"]]
+        [['text'=>"Fast"],['text'=>"Permanent"]],
+	     [['text'=>"Server3"]]
              ],'resize_keyboard'=>true])
  ]); 
 }
@@ -85,6 +87,25 @@ if ($text == "Permanent" || $text == "/fast"){
         'text'=>"➖➖➖➖➖➖➖➖➖➖➖
 
 $proxy2
+
+
+➖➖➖➖➖➖➖➖➖➖➖
+@King_Network7",
+        'reply_to_message_id' => $message_id2,
+ 'parse_mode'=>"html",
+ 'reply_markup'=>json_encode([
+     'keyboard'=>[
+         [['text'=>"Back"],['text'=>"Reload"]]
+         ],'resize_keyboard'=>true])
+ ]); 
+}
+//=====================//
+if ($text == "Server3" || $text == "/Server3"){
+    bot('sendmessage',[
+        'chat_id'=>$chat_id,
+        'text'=>"➖➖➖➖➖➖➖➖➖➖➖
+
+$proxy3
 
 
 ➖➖➖➖➖➖➖➖➖➖➖
