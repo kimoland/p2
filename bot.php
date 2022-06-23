@@ -34,10 +34,14 @@ $username = $message->from->username;
 $proxy = file_get_contents("https://proxykn7.herokuapp.com/proxy");
 $admin = 710732845;
 $prox=json_decode(file_get_contents("https://mtpro.xyz/api/?type=mtproto"),true);
-$host=$prox['0']['host'];
-$port=$prox['1']['port'];
-$secret=$prox['2']['secret'];
-$ping=$prox['8']['price'];
+for ($i = 0; $i < 5;$i++)
+{
+	$host=$prox['$i']['host'];
+	$port=$prox['$i']['port'];
+	$secret=$prox['$i']['secret'];
+        $messagepr .= "🌐Proxy: "."https://t.me/proxy?server=$host&port=$port&secret=$secret"."\n\n";
+    
+}
 $message_id2 = $message->message_id;
 
 //==================================
@@ -88,11 +92,9 @@ if ($text == "Fast" || $text == "/fast"){
         'chat_id'=>$chat_id,
         'text'=>"➖➖➖➖➖➖➖➖➖➖➖
 
-	
-$host
-$port
-$secret
-$ping
+$messagepr
+
+
 ➖➖➖➖➖➖➖➖➖➖➖
 @King_Network7",
         'reply_to_message_id' => $message_id2,
@@ -103,7 +105,6 @@ $ping
          ],'resize_keyboard'=>true])
  ]); 
 }
-$arz=json_decode(file_get_contents("https://r2f.ir/web/arz.php"),true);
 //=====================//
 if ($text == "Back"){
     bot('sendmessage',[
