@@ -32,6 +32,7 @@ $firstname = $message->from->first_name;
 $lastname = $message->from->last_name;
 $username = $message->from->username;
 $proxy = file_get_contents("https://proxykn7.herokuapp.com/proxy");
+$proxy2 = file_get_contents("https://prox2d.herokuapp.com/phpinfo/api.php");
 $admin = 710732845;
 $message_id2 = $message->message_id;
 
@@ -83,7 +84,7 @@ if ($text == "Fast" || $text == "/fast"){
         'chat_id'=>$chat_id,
         'text'=>"➖➖➖➖➖➖➖➖➖➖➖
 
-$messagepr
+$proxy2
 
 
 ➖➖➖➖➖➖➖➖➖➖➖
