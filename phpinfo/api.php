@@ -13,5 +13,5 @@ for ($i = 0; $i < count($prox);$i++)
 
 
 ?>
-    <?php echo $messagepr; ?>
+    <?php echo $message; ?>
 
