@@ -84,8 +84,8 @@ $channel_post = $update->message->channel_post;
 $code = file_get_contents("data/code.txt");
 $code2 = file_get_contents("data/code2.txt");
 $chid = $update->channel_post->message->message_id;
-$chat_id = $message->chat->id;
 $message_id = $message->message_id;
+$chat_id = $message->chat->id;
 $from_id = $message->from->id;
 $c_id = $message->forward_from_chat->id;
 $forward_id = $update->message->forward_from->id;
@@ -108,7 +108,7 @@ $fromm_id = $update->inline_query->from->id;
 $fromm_user = $update->inline_query->from->username;
 $inline_query = $update->inline_query;
 $query_id = $inline_query->id;
-$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot1529135125:AAESTjd32qwoLcH8qEU7fJFdRGKmFzyPjBY/getChatMember?chat_id=KimoLand&user_id=$fromm_id"));
+$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot1529135125:AAESTjd32qwoLcH8qEU7fJFdRGKmFzyPjBY/getChatMember?chat_id=KimoLand&user_id=$chat_id"));
 $tch = $truechannel->result->status;
 //====================ᵗᶦᵏᵃᵖᵖ======================//
 $ptn = json_encode([
