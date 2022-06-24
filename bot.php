@@ -6,6 +6,7 @@ $userbot = "KingProxy7Bot";
 $channels = "KimoLand";
 $logchchannel = "@KingProxyLog";
 $admin = 710732845;
+$server_free_1 = file_get_contents("https://proxykn7.herokuapp.com/proxy");
 //=================Functions====================\\
 function makereq($method, $datas = [])
 {
@@ -128,6 +129,26 @@ $btn_menu_admin = json_encode([
     [['text' => "↩️برگشت"]]
   ], 'resize_keyboard' => true,
 ]);
+$btn_getproxy = json_encode([
+  'keyboard' => [
+    [['text' => "🔰بخش عادی🔰"]],
+    [['text' => "⚜️بخش ویژه⚜️"]],
+    [['text' => "↩️برگشت"]]
+  ], 'resize_keyboard' => true,
+]);
+$btn_free_server = json_encode([
+  'keyboard' => [
+    [['text' => "سرور دوم2️⃣"], ['text' => "1️⃣سرور اول"]],
+    [['text' => "سرور چهارم4️⃣"], ['text' => "3️⃣سرور سوم "]],
+    [['text' => "↩️برگشت"]]
+  ], 'resize_keyboard' => true,
+]);
+$btn_vip_server = json_encode([
+  'keyboard' => [
+    [['text' => "🔆سرور بدون اسپانسر🔆"]],
+    [['text' => "↩️برگشت"]]
+  ], 'resize_keyboard' => true,
+]);
 $btn_back = json_encode([
   'keyboard' => [
     [['text' => "↩️برگشت"]]
@@ -135,7 +156,7 @@ $btn_back = json_encode([
 ]);
 //=================Buttons====================\\
 if (strpos($ban, "$from_id") !== false) {
-  SendMessage($chat_id, "⚠️حساب شما توسط مدیریت مسدود شده است\n\n🌀@$userbot\n🆔@$channels");
+  SendMessage($chat_id, "⚠️حساب شما توسط مدیریت مسدود شده است\n\n🆔@$channels");
 }
 //=================Help====================\\
 elseif ($textmessage == 'راهنما🧧') {
@@ -213,8 +234,8 @@ elseif ($textmessage == '🖌ارسال نظر') {
 } elseif ($step == 'feedback') {
   save("data/$from_id/step.txt", "none");
   $feed = $textmessage;
-  SendMessage($admin, "✉️یک نظر جدید ارسال شد\n\n👤یوزرآیدی: $from_id\n💠یوزرنیم: @$username\n📝متن: $textmessage\n\n🌀@$userbot\n🆔@$channels");
-  SendMessage($logchchannel, "✉️یک نظر جدید ارسال شد\n\n👤یوزرآیدی: $from_id\n💠یوزرنیم: @$username\n📝متن: $textmessage\n\n🌀@$userbot\n🆔@$channels");
+  SendMessage($admin, "✉️یک نظر جدید ارسال شد\n\n👤یوزرآیدی: $from_id\n💠یوزرنیم: @$username\n📝متن: $textmessage\n\n🆔@$channels");
+  SendMessage($logchchannel, "✉️یک نظر جدید ارسال شد\n\n👤یوزرآیدی: $from_id\n💠یوزرنیم: @$username\n📝متن: $textmessage\n\n🆔@$channels");
   SendMessage($chat_id, "✅نظر شما با موفقیت ارسال شد");
 }
 //=================Delete Vip Account====================\\
@@ -233,7 +254,7 @@ elseif (strpos($textmessage, "/delete_vip") !== false) {
 elseif ($textmessage == 'حمایت💰') {
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "‼️برای ادامه فعالیت ربات و تامین بخشی از هزینه های سرور میتوانید از طریق لینک زیر از ربات و تیم حمایت کنید.\n\n🌀@$userbot\n🆔@$channels",
+    'text' => "‼️برای ادامه فعالیت ربات و تامین بخشی از هزینه های سرور میتوانید از طریق لینک زیر از ربات و تیم حمایت کنید.\n\n🆔@$channels",
     'parse_mode' => 'MarkDown',
     'reply_markup' => json_encode([
       'inline_keyboard' =>
@@ -275,7 +296,7 @@ elseif ($textmessage == '/start') {
   }
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "💥به ربات کینگ پروکسی خوش اومدی\n💫دریافت رایگان پروکسی پرسرعت تلگرام\n\n🌀@$userbot\n🆔@$channels",
+    'text' => "💥به ربات کینگ پروکسی خوش اومدی\n💫دریافت رایگان پروکسی پرسرعت تلگرام\n\n🆔@$channels",
     'parse_mode' => 'Html',
     'reply_markup' => $btn_menu
   ]));
@@ -290,11 +311,11 @@ elseif ($textmessage == '⭐️درباره ما') {
     ↯سرور: Exclusive (https://t.me/King_network7)
     ↯ورژن: 1.0
     ↯لینک: نیم بها
-    ↯حمایت: دونیت (https://www.payping.ir/d/WiZG)
+    ↯حمایت: <a href=" . 'https://www.payping.ir/d/WiZG' . ">دونیت</a>
     
     🌀@$userbot
     🆔@$channels",
-    'parse_mode' => 'MarkDown',
+    'parse_mode' => 'HTML',
     'reply_markup' => $btn_back,
   ]));
 }
@@ -303,7 +324,7 @@ elseif ($textmessage == '/botpanel')
   if ($from_id == $admin) {
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
-      'text' => "🔰به پنل مدیریت خوش آمدید\n\n🌀@$userbot\n🆔@$channels",
+      'text' => "🔰به پنل مدیریت خوش آمدید\n\n🆔@$channels",
       'parse_mode' => 'MarkDown',
       'reply_markup' => $btn_menu_admin
     ]));
@@ -379,16 +400,30 @@ elseif ($step == 'fortoall') {
   ]);
 }
 //=================Block====================\\
-elseif ($textmessage == 'بلاک⛔️')
+elseif ($textmessage == '❌بلاک')
   if ($chat_id == $admin) {
-    SendMessage($chat_id, "❗️روش بلاک کردن کاربر در ربات\n\n🔅/block USERID\n\n〽️به جای USERID آیدی عددی کاربر موردنظر را بگذارید\n\n🌀@$userbot\n🆔@$channels");
+    SendMessage($chat_id, "❗️روش بلاک کردن کاربر در ربات\n\n🔅/block USERID\n\n〽️به جای USERID آیدی عددی کاربر موردنظر را بگذارید\n\n🆔@$channels");
   } else {
     SendMessage($chat_id, "❗️شما ادمین ربات نیستید❗️");
   }
 //=================UnBlock====================\\
-elseif ($textmessage == 'آنبلاک✅')
+elseif ($textmessage == 'آنبلاک⭕️')
   if ($chat_id == $admin) {
-    SendMessage($chat_id, "❗️روش آنبلاک کردن کاربر در ربات\n\n🔅/unblock USERID\n\n〽️به جای USERID آیدی عددی کاربر موردنظر را بگذارید\n\n🌀@$userbot\n🆔@$channels");
+    SendMessage($chat_id, "❗️روش آنبلاک کردن کاربر در ربات\n\n🔅/unblock USERID\n\n〽️به جای USERID آیدی عددی کاربر موردنظر را بگذارید\n\n🆔@$channels");
+  } else {
+    SendMessage($chat_id, "❗️شما ادمین ربات نیستید❗️");
+  }
+//=================Add Vip Account====================\\
+elseif ($textmessage == '⚜️ویژه کردن حساب')
+  if ($chat_id == $admin) {
+    SendMessage($chat_id, "🔰روش ویژه کردن کاربر در ربات\n\n🔅/add_vip USERID\n\n〽️به جای USERID آیدی عددی کاربر موردنظر را بگذارید\n\n🆔@$channels");
+  } else {
+    SendMessage($chat_id, "❗️شما ادمین ربات نیستید❗️");
+  }
+//=================UnBlock====================\\
+elseif ($textmessage == 'لغو حساب ویژه⚜️')
+  if ($chat_id == $admin) {
+    SendMessage($chat_id, "🔰روش لغو حساب ویژه کاربر در ربات\n\n🔅/delete_vip USERID\n\n〽️به جای USERID آیدی عددی کاربر موردنظر را بگذارید\n\n🆔@$channels");
   } else {
     SendMessage($chat_id, "❗️شما ادمین ربات نیستید❗️");
   }
@@ -409,133 +444,70 @@ elseif ($textmessage == '💢دریافت پروکسی💢') {
     'chat_id' => $update->message->chat->id,
     'text' => "به منوی ساخت ربات خوش آمدید👾\nلطفا یک دکمه را انتخاب کنید.🤖",
     'parse_mode' => 'MarkDown',
-    'reply_markup' => json_encode([
-      'keyboard' => [
-        [
-          ['text' => "بخش ویژه🏆"]
-        ],
-        [
-          ['text' => "بخش رایگان🎯"]
-        ],
-        [
-          ['text' => "🔙 برگشت"]
-        ]
-      ]
-    ])
+    'reply_markup' => $btn_getproxy
   ]));
 }
 //=================Get Proxy Vip====================\\
-elseif ($textmessage == 'بخش ویژه🏆')
+elseif ($textmessage == '⚜️بخش ویژه⚜️')
   if (strpos($uvip, "$from_id") !== false) {
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
-      'text' => "نوع ربات را انتخاب کنید.😃",
+      'text' => "✅سرور مورد نظر را انتخاب کنید",
       'parse_mode' => 'MarkDown',
-      'reply_markup' => json_encode([
-        'keyboard' => [
-          [
-            ['text' => "🔙 برگشت به منو"]
-          ]
-        ]
-      ])
+      'reply_markup' => $btn_vip_server
     ]));
   } else {
-    $textvip = '⚜️ متاسفانه حساب شما رایگان است.
-➖➖➖➖➖➖➖➖➖➖➖
-🔸مزایا اکانت ویژه :
-
-1⃣ ساخت ربات PHP بدون تبلیغات
-ساخت ربات های🤖 :
-1-پیامرسان ویژه🎗
-2-ایمیل جعلی ویژه🎯
-3-ایکس او ویژه🎪
-4-ماشین حساب ویژه🏵
-5-یوزر اینفو ویژه📜
-6-دستیار متن ویژه📝
-7-کوتاه کننده لینک ویژه🔗
-8-مخفی ساز متن ویژه🔍
-9-آپلودر ویژه📤
-10-فال حافظ ویژه📜
-2⃣ پاسخگویی سریعتر در پشتیبانی
-3⃣ در اولویت بودن آپدیت ها برای اکانت های ویژه
-
-💰 قیمت ویژه شدن اکانت شما در ربات فقط و فقط 2000 تومان میباشد.
-
-جهت پرداخت به آیدی زیر مراجعه کنید
-*@kurdishhacker*';
+    $textvip = "❗️حساب شما رایگان است
+    ➖➖➖➖➖➖➖➖➖➖➖
+    مزایا حساب ویژه:
+    ↯پروکسی های پرسرعت
+    ↯پروکسی های بدون اسپانسر
+    ↯پروکسی های نیم بها
+    ➖➖➖➖➖➖➖➖➖➖➖
+    ⚠️بخش ویژه برای عموم کاربران غیرفعال است
+    
+    🆔@$channels";
     SendMessage($chat_id, $textvip);
   }
 //=================Get Proxy Free====================\\
-elseif ($textmessage == 'بخش رایگان🎯') {
+elseif ($textmessage == '🔰بخش عادی🔰') {
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "نوع ربات را انتخاب کنید.😃",
+    'text' => "✅سرور مورد نظر را انتخاب کنید",
     'parse_mode' => 'MarkDown',
-    'reply_markup' => json_encode([
-      'keyboard' => [
-        [['text' => "ویوگیر"], ['text' => "بازدیدگیر شکلاتی"]],
-        [['text' => "تغییر نام فایل ها"], ['text' => "فروشگاه"]],
-        [['text' => "🅾ایکس او❎"], ['text' => "📿صلوات شمار"]],
-        [['text' => "یوزر اینفوℹ️"], ['text' => "ماشین حساب🖌"]],
-        [['text' => "زمان⏰"], ['text' => "کوتاه کننده لینک🌀"]],
-        [['text' => "دستیار متن🖊"], ['text' => "متن عاشقانه💝"]],
-        [['text' => "چک کننده کدهای php🔍"], ['text' => "🤖تفریحی"]],
-        [['text' => "فال حافظ📜"], ['text' => "پیامرسان💬"]],
-        [['text' => "🔙 برگشت به منو"]]
-      ]
-    ])
+    'reply_markup' => $btn_free_server
   ]));
 }
 //=================Proxy Server Free====================\\
-elseif ($textmessage == 'پیامرسان💬') {
-  $tedad = file_get_contents("data/$from_id/tedad.txt");
-  if ($tedad >= 100 && $from_id != '263500706') {
-    SendMessage($chat_id, "🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-    return;
-  }
-  save("data/$from_id/step.txt", "create bot23");
-  var_dump(
-    makereq(
-      'sendMessage',
-      [
-        'chat_id' => $update->message->chat->id,
-        'text' => "توکن را وارد کنید : ",
-        'parse_mode' => 'MarkDown',
-        'reply_markup' => json_encode([
-          'keyboard' =>
-          [[['text' => "🔙 برگشت"]]],
-          'resize_keyboard' => true
-        ])
-      ]
-    )
-  );
+elseif ($textmessage == '1️⃣سرور اول') {
+  var_dump(makereq('sendMessage', [
+    'chat_id' => $update->message->chat->id,
+    'text' => "🌀لیست پروکسی ها
+
+    ➖➖➖➖➖➖➖➖➖➖
+    
+
+
+    $server_free_1
+    ➖➖➖➖➖➖➖➖➖➖
+    
+    🆔@$channels",
+    'parse_mode' => 'MarkDown',
+    'reply_markup' => $btn_back 
+  ]));
 }
 //=================Proxy Server Vip====================\\
-elseif ($textmessage == 'پیام رسان ویژه📬')
+elseif ($textmessage == '🔆سرور بدون اسپانسر🔆')
   if (strpos($uvip, "$from_id") !== false) {
-    $tedad = file_get_contents("data/$from_id/tedad.txt");
-    if ($tedad >= 100 && $from_id != '263500706') {
-      SendMessage($chat_id, "🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-      return;
-    }
-    save("data/$from_id/step.txt", "create bot");
-    var_dump(
-      makereq(
-        'sendMessage',
-        [
-          'chat_id' => $update->message->chat->id,
-          'text' => "توکن را وارد کنید : ",
-          'parse_mode' => 'MarkDown',
-          'reply_markup' => json_encode([
-            'keyboard' =>
-            [[['text' => "🔙 برگشت"]]],
-            'resize_keyboard' => true
-          ])
-        ]
-      )
-    );
+    var_dump(makereq('sendMessage', [
+      'chat_id' => $update->message->chat->id,
+      'text' => "✅",
+      'parse_mode' => 'MarkDown',
+      'reply_markup' => $btn_back
+    ]));
   } else {
-    SendMessage($chat_id, "شما کاربر ویژه🏆نیستید☹️");
+    $textvip = "❌حساب کاربری شما ویژه نمیباشد❌";
+    SendMessage($chat_id, $textvip);
   }
 //=================Proxy Server Free====================\\
 else {
