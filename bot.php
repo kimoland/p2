@@ -6,10 +6,10 @@ $userbot = "KingProxy7Bot";
 $channels = "King_network7";
 $logchchannel = "@KingProxyLog";
 $admin = 710732845;
-$server_free_1 = file_get_contents("https://kimoss8.herokuapp.com/api/server1.php");
-$server_free_2 = file_get_contents("https://kimoss8.herokuapp.com/api/server2.php");
-$server_vip_1 = file_get_contents("https://kimoss8.herokuapp.com/api/server_vip1.php");
-$server_vip_2 = file_get_contents("https://kimoss8.herokuapp.com/api/server_vip2.php");
+$server_free_1 = file_get_contents("https://kingproxy.de/api/server1.php");
+$server_free_2 = file_get_contents("https://kingproxy.de/api/server2.php");
+$server_vip_1 = file_get_contents("https://kingproxy.de/api/server_vip1.php");
+$server_vip_2 = file_get_contents("https://kingproxy.de/api/server_vip2.php");
 //=================Functions====================\\
 function makereq($method, $datas = [])
 {
