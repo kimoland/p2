@@ -1,6 +1,6 @@
 <?php
 define('API_KEY','1529135125:AAESTjd32qwoLcH8qEU7fJFdRGKmFzyPjBY');
-$admin =198153003;
+$admin = 710732845;
 $channels = "@KimoLand";
 $token = API_KEY;
 $host_folder = 'https://kimoss8.herokuapp.com';
