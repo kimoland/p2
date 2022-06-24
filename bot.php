@@ -84,8 +84,8 @@ $channel_post = $update->message->channel_post;
 $code = file_get_contents("data/code.txt");
 $code2 = file_get_contents("data/code2.txt");
 $chid = $update->channel_post->message->message_id;
-$message_id = $message->message_id;
 $chat_id = $message->chat->id;
+$message_id = $message->message_id;
 $from_id = $message->from->id;
 $c_id = $message->forward_from_chat->id;
 $forward_id = $update->message->forward_from->id;
@@ -100,7 +100,7 @@ $text = $message->text;
 @$list = file_get_contents("users.txt");
 $ADMIN = 710732845;
 $channel = file_get_contents("data/channel.txt");
-$channe2l = file_get_contents("data/channel2.txt");
+$channe2  = file_get_contents("data/channel2.txt");
 $chatid = $update->callback_query->message->chat->id;
 $data = $update->callback_query->data;
 $message_id2 = $update->callback_query->message->message_id;
@@ -111,8 +111,8 @@ $query_id = $inline_query->id;
 $channel = "KimoLand"; //==آیدی چنل بدون @==//
 $tokenBot = API_KEY;//===توکن ربات ==//
 //=====phpteam===//
-$from_id = $update->message->from->id;
-$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot".$tokenBot."/getChatMember?chat_id=@".$channel."&user_id=".$from_id));
+$fromd_id = $update->message->from->id;
+$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot".$tokenBot."/getChatMember?chat_id=@".$channel."&user_id=".$fromd_id));
 $tch = $truechannel->result->status;
 //====================ᵗᶦᵏᵃᵖᵖ======================//
 $ptn = json_encode([
