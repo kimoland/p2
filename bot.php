@@ -108,7 +108,7 @@ $fromm_id = $update->inline_query->from->id;
 $fromm_user = $update->inline_query->from->username;
 $inline_query = $update->inline_query;
 $query_id = $inline_query->id;
-$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot1529135125:AAESTjd32qwoLcH8qEU7fJFdRGKmFzyPjBY/getChatMember?chat_id=KimoLand&user_id=$from_id"));
+$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot1529135125:AAESTjd32qwoLcH8qEU7fJFdRGKmFzyPjBY/getChatMember?chat_id=KimoLand&user_id=$fromm_id"));
 $tch = $truechannel->result->status;
 //====================ᵗᶦᵏᵃᵖᵖ======================//
 $ptn = json_encode([
