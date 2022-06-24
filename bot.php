@@ -265,7 +265,7 @@ elseif ($textmessage == 'حمایت💰') {
 elseif ($textmessage == '🛰اشتراک گذاری ربات🛰') {
   var_dump(makereq('SendPhoto', [
     'chat_id' => $update->message->chat->id,
-    'photo'=>"https://s6.uupload.ir/files/banner_99ej.gif",
+    'photo'=>"https://s6.uupload.ir/files/banner_bmrz.png",
     'caption'=>"🔥ربات پروکسی ضدفلیتر تلگرام
 〰️〰️〰️〰️〰️〰️〰️
 🔹پرسرعت
