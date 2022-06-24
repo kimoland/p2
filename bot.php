@@ -139,7 +139,6 @@ elseif ($textmessage == '↩️برگشت') {
 }
 //=================Status====================\\
 elseif ($textmessage == 'آمار📋' && $from_id == $admin) {
-  $number = count(scandir("bots")) - 1;
   $uvis = file_get_contents('data/vips.txt');
   $usercount = 1;
   $fp = fopen("data/users.txt", 'r');
