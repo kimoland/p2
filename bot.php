@@ -6,7 +6,11 @@ $userbot = "KingProxy7Bot";
 $channels = "KimoLand";
 $logchchannel = "@KingProxyLog";
 $admin = 710732845;
-$server_free_1 = file_get_contents("https://proxykn7.herokuapp.com/proxy");
+$server_free_1 = file_get_contents("https://kimoss8.herokuapp.com/api/server1.php");
+$server_free_2 = file_get_contents("https://kimoss8.herokuapp.com/api/server2.php");
+$server_free_3 = file_get_contents("https://kimoss8.herokuapp.com/api/server3.php");
+$server_free_4 = file_get_contents("https://kimoss8.herokuapp.com/api/server4.php");
+$server_vip_2 = file_get_contents("https://kimoss8.herokuapp.com/api/server_vip2.php");
 //=================Functions====================\\
 function makereq($method, $datas = [])
 {
@@ -21,18 +25,6 @@ function makereq($method, $datas = [])
   } else {
     return json_decode($res);
   }
-}
-
-function EditMessageText($chat_id, $message_id, $text, $parse_mode, $disable_web_page_preview, $keyboard)
-{
-  bot('editMessagetext', [
-    'chat_id' => $chat_id,
-    'message_id' => $message_id,
-    'text' => $text,
-    'parse_mode' => $parse_mode,
-    'disable_web_page_preview' => $disable_web_page_preview,
-    'reply_markup' => $keyboard
-  ]);
 }
 
 function apiRequest($method, $parameters)
@@ -139,7 +131,7 @@ $btn_getproxy = json_encode([
 $btn_free_server = json_encode([
   'keyboard' => [
     [['text' => "سرور دوم2️⃣"], ['text' => "1️⃣سرور اول"]],
-    [['text' => "سرور چهارم4️⃣"], ['text' => "3️⃣سرور سوم "]],
+    [['text' => "سرور چهارم4️⃣"], ['text' => "3️⃣سرور سوم"]],
     [['text' => "↩️برگشت"]]
   ], 'resize_keyboard' => true,
 ]);
@@ -458,15 +450,15 @@ elseif ($textmessage == '⚜️بخش ویژه⚜️')
     ]));
   } else {
     $textvip = "❗️حساب شما رایگان است
-    ➖➖➖➖➖➖➖➖➖➖➖
-    مزایا حساب ویژه:
-    ↯پروکسی های پرسرعت
-    ↯پروکسی های بدون اسپانسر
-    ↯پروکسی های نیم بها
-    ➖➖➖➖➖➖➖➖➖➖➖
-    ⚠️بخش ویژه برای عموم کاربران غیرفعال است
+➖➖➖➖➖➖➖➖➖➖➖
+مزایا حساب ویژه:
+↯پروکسی های پرسرعت
+↯پروکسی های بدون اسپانسر
+↯پروکسی های نیم بها
+➖➖➖➖➖➖➖➖➖➖➖
+⚠️بخش ویژه برای عموم کاربران غیرفعال است
     
-    🆔@$channels";
+🆔@$channels";
     SendMessage($chat_id, $textvip);
   }
 //=================Get Proxy Free====================\\
@@ -484,14 +476,68 @@ elseif ($textmessage == '1️⃣سرور اول') {
     'chat_id' => $update->message->chat->id,
     'text' => "🌀لیست پروکسی ها
 
-    ➖➖➖➖➖➖➖➖➖➖
+➖➖➖➖➖➖➖➖➖➖
     
 
 
-    $server_free_1
-    ➖➖➖➖➖➖➖➖➖➖
+$server_free_1
+➖➖➖➖➖➖➖➖➖➖
     
-    🆔@$channels",
+🆔@$channels",
+    'parse_mode' => 'MarkDown',
+    'reply_markup' => $btn_back 
+  ]));
+}
+
+elseif ($textmessage == 'سرور دوم2️⃣') {
+  var_dump(makereq('sendMessage', [
+    'chat_id' => $update->message->chat->id,
+    'text' => "🌀لیست پروکسی ها
+
+➖➖➖➖➖➖➖➖➖➖
+    
+
+
+$server_free_2
+➖➖➖➖➖➖➖➖➖➖
+    
+🆔@$channels",
+    'parse_mode' => 'MarkDown',
+    'reply_markup' => $btn_back 
+  ]));
+}
+
+elseif ($textmessage == '3️⃣سرور سوم') {
+  var_dump(makereq('sendMessage', [
+    'chat_id' => $update->message->chat->id,
+    'text' => "🌀لیست پروکسی ها
+
+➖➖➖➖➖➖➖➖➖➖
+    
+
+
+$server_free_3
+➖➖➖➖➖➖➖➖➖➖
+    
+🆔@$channels",
+    'parse_mode' => 'MarkDown',
+    'reply_markup' => $btn_back 
+  ]));
+}
+
+elseif ($textmessage == 'سرور چهارم4️⃣') {
+  var_dump(makereq('sendMessage', [
+    'chat_id' => $update->message->chat->id,
+    'text' => "🌀لیست پروکسی ها
+
+➖➖➖➖➖➖➖➖➖➖
+    
+
+
+$server_free_4
+➖➖➖➖➖➖➖➖➖➖
+    
+🆔@$channels",
     'parse_mode' => 'MarkDown',
     'reply_markup' => $btn_back 
   ]));
@@ -501,7 +547,16 @@ elseif ($textmessage == '🔆سرور بدون اسپانسر🔆')
   if (strpos($uvip, "$from_id") !== false) {
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
-      'text' => "✅",
+      'text' => "🌀لیست پروکسی ها
+
+      ➖➖➖➖➖➖➖➖➖➖
+          
+      
+      
+      $server_free_4
+      ➖➖➖➖➖➖➖➖➖➖
+          
+      🆔@$channels",
       'parse_mode' => 'MarkDown',
       'reply_markup' => $btn_back
     ]));
