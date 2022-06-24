@@ -1,9 +1,9 @@
 <?php
 
-define('API_KEY', '1529135125:AAESTjd32qwoLcH8qEU7fJFdRGKmFzyPjBY');
+define('API_KEY', '1491491242:AAHX1Yj0f6hsI8fTDD_wg2DbAh355DGqPo4');
 $token = API_KEY;
 $userbot = "KingProxy7Bot";
-$channels = "KimoLand";
+$channels = "King_network7";
 $logchchannel = "@KingProxyLog";
 $admin = 710732845;
 $server_free_1 = file_get_contents("https://kimoss8.herokuapp.com/api/server1.php");
