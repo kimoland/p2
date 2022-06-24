@@ -60,7 +60,7 @@ $membersvip = file_get_contents("administrative/user/$from_id/gold.txt");
 $fileid = $update->message->document->file_id;
 $photoid = $update->message->photo->file_id;
 $musicid = $update->message->audio->file_id;
-$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot1529135125:AAESTjd32qwoLcH8qEU7fJFdRGKmFzyPjBY/getChatMember?chat_id=@KimoLandBot&user_id=".$from_id));
+$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot1529135125:AAESTjd32qwoLcH8qEU7fJFdRGKmFzyPjBY/getChatMember?chat_id=@KimoLand&user_id=".$from_id));
 $tch = $truechannel->result->status;
 $message_id = $update->message->message_id;
 $message_id_call = $update->callback_query->message->message_id;
