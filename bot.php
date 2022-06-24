@@ -8,8 +8,7 @@ $logchchannel = "@KingProxyLog";
 $admin = 710732845;
 $server_free_1 = file_get_contents("https://kimoss8.herokuapp.com/api/server1.php");
 $server_free_2 = file_get_contents("https://kimoss8.herokuapp.com/api/server2.php");
-$server_free_3 = file_get_contents("https://kimoss8.herokuapp.com/api/server3.php");
-$server_free_4 = file_get_contents("https://kimoss8.herokuapp.com/api/server4.php");
+$server_vip_1 = file_get_contents("https://kimoss8.herokuapp.com/api/server_vip1.php");
 $server_vip_2 = file_get_contents("https://kimoss8.herokuapp.com/api/server_vip2.php");
 //=================Functions====================\\
 function makereq($method, $datas = [])
@@ -61,6 +60,15 @@ function SendMessage($ChatId, $TextMsg)
   ]);
 }
 
+function SendPhoto($ChatId,$photo,$keyboard,$caption){
+	makereq('SendPhoto',[
+	'chat_id'=>$ChatId,
+	'photo'=>$photo,
+	'caption'=>$caption,
+	'reply_markup'=>$keyboard
+	]);
+	}
+
 function SendSticker($ChatId, $sticker_ID)
 {
   makereq('sendSticker', [
@@ -109,7 +117,8 @@ $btn_menu = json_encode([
   'keyboard' => [
     [['text' => "💢دریافت پروکسی💢"]],
     [['text' => "حمایت💰"], ['text' => "🖌ارسال نظر"]],
-    [['text' => "راهنما🧧"], ['text' => "⭐️درباره ما"]]
+    [['text' => "راهنما🧧"], ['text' => "❔درباره ما"]],
+    [['text' => "🛰اشتراک گذاری ربات🛰"]]
   ], 'resize_keyboard' => true,
 ]);
 $btn_menu_admin = json_encode([
@@ -138,6 +147,7 @@ $btn_free_server = json_encode([
 $btn_vip_server = json_encode([
   'keyboard' => [
     [['text' => "🔆سرور بدون اسپانسر🔆"]],
+    [['text' => "⚡️سرور پر سرعت⚡️"]],
     [['text' => "↩️برگشت"]]
   ], 'resize_keyboard' => true,
 ]);
@@ -161,8 +171,7 @@ elseif ($textmessage == 'راهنما🧧') {
   ⇇پروکسی ها عادی و اسپانسری هستند
   ⇇بخش ویژه موقتا غیرفعال است
   
-  🌀@$userbot
-  🆔@$channels",
+🆔@$channels",
     'parse_mode' => 'Html',
     'reply_markup' => $btn_menu,
     'resize_keyboard' => false
@@ -203,16 +212,14 @@ elseif ($textmessage == '📊آمار ربات📊' && $from_id == $admin) {
   ➖اعضا ویژه : $avis
   ➖آیدی ها ویژه :$uvis
   
-  🌀@$userbot
-  🆔@$channels");
+🆔@$channels");
   SendMessage($logchchannel, "🛗وضعیت ربات
   
   ➖تعداد اعضا : $usercount
   ➖اعضا ویژه : $avis
   ➖آیدی ها ویژه :$uvis
   
-  🌀@$userbot
-  🆔@$channels");
+🆔@$channels");
 }
 //=================FeedBack====================\\
 elseif ($textmessage == '🖌ارسال نظر') {
@@ -253,7 +260,27 @@ elseif ($textmessage == 'حمایت💰') {
       [[['text' => "🔥لینک دونیت🔥", 'url' => "https://payping.ir/d/WiZG"]]]
     ])
   ]));
-}
+}	
+//=================Banner====================\\
+elseif ($textmessage == '🛰اشتراک گذاری ربات🛰') {
+  var_dump(makereq('SendPhoto', [
+    'chat_id' => $update->message->chat->id,
+    'photo'=>"https://s6.uupload.ir/files/banner_99ej.gif",
+    'caption'=>"🔥ربات پروکسی ضدفلیتر تلگرام
+〰️〰️〰️〰️〰️〰️〰️
+🔹پرسرعت
+🔹رایگان
+🔹آپدیت آنی
+🔹بدون اسپانسر
+🔹ضدفیلتر و قوی
+〰️〰️〰️〰️〰️〰️〰️
+🆔@$channels",
+    'reply_markup' => json_encode([
+      'inline_keyboard' =>
+      [[['text' => "🔸ورود به ربات🔸", 'url' => "https://t.me/$userbot"]]]
+    ])
+  ]));
+}	
 //=================Join Forced====================\\
 elseif ($tch != 'member' && $tch != 'creator' && $tch != 'administrator') {
   var_dump(makereq('sendMessage', [
@@ -294,21 +321,21 @@ elseif ($textmessage == '/start') {
   ]));
 }
 //=================Channel====================\\
-elseif ($textmessage == '⭐️درباره ما') {
+elseif ($textmessage == '❔درباره ما') {
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
     'text' => "👤درباره ما
-    
-    ↯طراحی: KingNetwork
-    ↯سرور: Exclusive (https://t.me/King_network7)
-    ↯ورژن: 1.0
-    ↯لینک: نیم بها
-    ↯حمایت: <a href=" . 'https://www.payping.ir/d/WiZG' . ">دونیت</a>
-    
-    🌀@$userbot
-    🆔@$channels",
-    'parse_mode' => 'HTML',
-    'reply_markup' => $btn_back,
+
+↯طراحی: KingNetwork
+↯سرور: Exclusive
+↯ورژن: 1.0.3
+↯لینک: نیم بها
+↯حمایت: دونیت
+  
+🆔@$channels",
+    'parse_mode' => 'Html',
+    'reply_markup' => $btn_menu,
+    'resize_keyboard' => false
   ]));
 }
 //=================Admin Panel====================\\
@@ -434,7 +461,7 @@ elseif (strpos($textmessage, "/add_vip") !== false) {
 elseif ($textmessage == '💢دریافت پروکسی💢') {
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "به منوی ساخت ربات خوش آمدید👾\nلطفا یک دکمه را انتخاب کنید.🤖",
+    'text' => "🔥نوع پروکسی را انتخاب کنید",
     'parse_mode' => 'MarkDown',
     'reply_markup' => $btn_getproxy
   ]));
@@ -506,42 +533,6 @@ $server_free_2
     'reply_markup' => $btn_back 
   ]));
 }
-
-elseif ($textmessage == '3️⃣سرور سوم') {
-  var_dump(makereq('sendMessage', [
-    'chat_id' => $update->message->chat->id,
-    'text' => "🌀لیست پروکسی ها
-
-➖➖➖➖➖➖➖➖➖➖
-    
-
-
-$server_free_3
-➖➖➖➖➖➖➖➖➖➖
-    
-🆔@$channels",
-    'parse_mode' => 'MarkDown',
-    'reply_markup' => $btn_back 
-  ]));
-}
-
-elseif ($textmessage == 'سرور چهارم4️⃣') {
-  var_dump(makereq('sendMessage', [
-    'chat_id' => $update->message->chat->id,
-    'text' => "🌀لیست پروکسی ها
-
-➖➖➖➖➖➖➖➖➖➖
-    
-
-
-$server_free_4
-➖➖➖➖➖➖➖➖➖➖
-    
-🆔@$channels",
-    'parse_mode' => 'MarkDown',
-    'reply_markup' => $btn_back 
-  ]));
-}
 //=================Proxy Server Vip====================\\
 elseif ($textmessage == '🔆سرور بدون اسپانسر🔆')
   if (strpos($uvip, "$from_id") !== false) {
@@ -549,14 +540,36 @@ elseif ($textmessage == '🔆سرور بدون اسپانسر🔆')
       'chat_id' => $update->message->chat->id,
       'text' => "🌀لیست پروکسی ها
 
-      ➖➖➖➖➖➖➖➖➖➖
+➖➖➖➖➖➖➖➖➖➖
           
       
       
-      $server_vip_2
-      ➖➖➖➖➖➖➖➖➖➖
+$server_vip_2
+➖➖➖➖➖➖➖➖➖➖
           
-      🆔@$channels",
+🆔@$channels",
+      'parse_mode' => 'MarkDown',
+      'reply_markup' => $btn_back
+    ]));
+  } else {
+    $textvip = "❌حساب کاربری شما ویژه نمیباشد❌";
+    SendMessage($chat_id, $textvip);
+  }
+
+elseif ($textmessage == '⚡️سرور پر سرعت⚡️')
+  if (strpos($uvip, "$from_id") !== false) {
+    var_dump(makereq('sendMessage', [
+      'chat_id' => $update->message->chat->id,
+      'text' => "🌀لیست پروکسی ها
+
+➖➖➖➖➖➖➖➖➖➖
+          
+      
+      
+$server_vip_1
+➖➖➖➖➖➖➖➖➖➖
+          
+🆔@$channels",
       'parse_mode' => 'MarkDown',
       'reply_markup' => $btn_back
     ]));
