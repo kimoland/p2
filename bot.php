@@ -1,9 +1,6 @@
 <?php
 define('API_KEY','1529135125:AAESTjd32qwoLcH8qEU7fJFdRGKmFzyPjBY');
 $admin = 710732845;
-$channels = "@KimoLand";
-$token = API_KEY;
-$host_folder = 'https://kimoss8.herokuapp.com';
 function makereq($method,$datas=[])
     {$url = "https://api.telegram.org/bot".API_KEY."/".$method;
     $ch = curl_init();
@@ -16,25 +13,6 @@ function makereq($method,$datas=[])
     else
   {return json_decode($res);}
     }
-    
-    function getChatMember($chat_id,$user_id){
-  $url = 'https://api.telegram.org/bot'.API_KEY.'/getChatMember?chat_id='.$chat_id.'&user_id='.$user_id;
-  $result = file_get_contents($url);
-  $result = json_decode ($result);
-  $result = $result->result->status;
-  return $result;
-    }
-    function EditMessageText($chat_id,$message_id,$text,$parse_mode,$disable_web_page_preview,$keyboard){
-     bot('editMessagetext',[
-    'chat_id'=>$chat_id,
-    'message_id'=>$message_id,
-    'text'=>$text,
-    'parse_mode'=>$parse_mode,
-    'disable_web_page_preview'=>$disable_web_page_preview,
-    'reply_markup'=>$keyboard
-    ]);
-    }
-    
 function apiRequest($method, $parameters)
     {if (!is_string($method))
     {error_log("Method name must be a string\n");
@@ -57,11 +35,9 @@ function apiRequest($method, $parameters)
     }
 $update = json_decode(file_get_contents('php://input'));
 var_dump($update);
-$mossage_id = $update->message->message_id;
-$chatid = $update->callback_query->message->chat->id;
 $chat_id = $update->message->chat->id;
-$fromid = $update->callback_query->message->from->id;
-$from_id = $update->message->from->id;;
+$mossage_id = $update->message->message_id;
+$from_id = $update->message->from->id;
 $msg_id = $update->message->message_id;
 $name = $update->message->from->first_name;
 $username = $update->message->from->username;
@@ -71,9 +47,9 @@ $step = file_get_contents("data/".$from_id."/step.txt");
 $members = file_get_contents('data/users.txt');
 $ban = file_get_contents('banlist.txt');
 $uvip = file_get_contents('data/vips.txt');
-$chanell = '$channels';
-$message_id = $update->callback_query->message->message_id;
-$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot$token/getChatMember?chat_id=$channels&user_id=".$from_id));
+$channel = '@kimoland';
+$token = API_KEY;
+$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot$token/getChatMember?chat_id=@$channel&user_id=".$from_id));
 $tch = $truechannel->result->status;
 function SendMessage($ChatId, $TextMsg)
 {
@@ -106,19 +82,73 @@ fclose($myfile);
 }
 if (strpos($ban , "$from_id") !== false  ) {
 SendMessage($chat_id,"متاسفیم😔\nدسترسی شما از این سرور مسدود شده است.⚫️");
-    }
+	}
+elseif(isset($update->callback_query))
+{$callbackMessage = '';var_dump(makereq('answerCallbackQuery',['callback_query_id'=>$update->callback_query->id,'text'=>$callbackMessage]));
+$chat_id = $update->callback_query->message->chat->id;
+$message_id = $update->callback_query->message->message_id;
+$data = $update->callback_query->data;
+if (strpos($data, "del") !== false )
+{$botun = str_replace("del ","",$data);
+unlink("bots/".$botun."/index.php");
+save("data/$chat_id/bots.txt","");
+save("data/$chat_id/tedad.txt","0");
+var_dump(makereq('editMessageText',
+['chat_id'=>$chat_id,
+'message_id'=>$message_id,
+'text'=>"ربات شما با موفقیت حذف شد !",
+'reply_markup'=>json_encode(['inline_keyboard'=>
+[[['text'=>"به کانال ما بپیوندید",'url'=>"https://telegram.me/four4team"]]]
+                            ])
+]                )
+        );
+}
+	elseif($tch != 'member' && $tch != 'creator' && $tch != 'administrator'){
+	SendMessage($chat_id,"📛 برای حمایت از ما و همچنان ربات ابتدا وارد کانال زیر بشید 👇
 
+🆔 @four4team
+
+✅ سپس روی JOIN بزنید و به ربات برگشته عبارت 👇
+
+🔸 /start
+
+✴️ رو بزنید تا دکمه های ربات نمایش داده بشن👌","html","true",$button_remove);
+	}
+else{var_dump(makereq('editMessageText',
+['chat_id'=>$chat_id,
+'message_id'=>$message_id,
+'text'=>"خطا",
+'reply_markup'=>json_encode(['inline_keyboard'=>
+[[['text'=>"`به کانال ما بپیوندید`",'url'=>"https://telegram.me/four4team"]]]
+                            ])
+]                    )
+             );
+   }
+}
 elseif ($textmessage == '🔙 برگشت')
 {save("data/$from_id/step.txt","none");
 var_dump(makereq('sendMessage',[
 'chat_id'=>$update->message->chat->id,
-'text'=>"سلام😃👋\n\n- به ربات ساز حرفه ای تلگرام خوش آمدید🌹\n- به راحتی برای خود یک ربات تلگرامی رایگان بسازید🎯\n- برای ساخت ربات جدید دکمه ساخت ربات را بزنید🤖\n🎗 @Samyar13bot🎗",
+'text'=>"`سلام😎🖐
+
+-به ربات ساز php وحرفه ی خوش اومدید👋
+-بااین سرویس هرنوع ربات به زبان php بسازید🗣
+-به راحتی یک ربات به زبان php بسازید.😸
+-برای ساخت به روی ساخت ربات کلیک کنید🤖
+-اپدیت های همیشگی !🤥`
+------------------------------------
+Channel 😺: @Four4team
+Robot 😾 : @creatallsBot",
 'parse_mode'=>'Html',
 'reply_markup'=>json_encode(['keyboard'=>
 [
-[['text'=>"🎯ساخت ربات"],['text'=>"🎗ربات های من"]],
-[['text'=>"📋راهنما"],['text'=>"🗑حذف ربات"],['text'=>"🔰قوانین"]],
-[['text'=>" 📢کانال ما"],['text'=>"📜ارسال نظر"]]
+[['text'=>"🎯ساخت ربات"]],
+[['text'=>"📋راهنما"],['text'=>"🎗ربات های من"]],
+[['text'=>"🔰قوانین"],['text'=>"🗑حذف ربات"]],
+[['text'=>"آمار ربات📊"]],
+[['text'=>" 📢کانال ما"],['text'=>"📜ارسال نظر"]],
+[['text'=>"پشیبانی✳️"],['text'=>"🎁کد هدیه"]],
+[['text'=>"اموزش ساخت ربات🤖"]],
 ],
 'resize_keyboard'=>false
                             ])
@@ -128,19 +158,43 @@ var_dump(makereq('sendMessage',[
 }
 elseif ($textmessage == '📋راهنما')
 {
-SendMessage($chat_id,"برای ساخت ربات جدید روی دکمه 🤖 ساخت ربات بزنید.\n\nبرای حذف ربات روی دکمه ❌ حذف ربات بزنید.\n\nبرای دیدن تعداد ربات ها خود روی دکمه 🚀 ربات های من بزنید.\n🤖@Samyar13bot🎗");
+SendMessage($chat_id,"برای ساخت ربات جدید روی دکمه 🤖 ساخت ربات بزنید`.\n\nبرای حذف ربات روی دکمه ❌ حذف ربات بزنید.\n\nبرای دیدن تعداد ربات ها خود روی دکمه 🚀 ربات های من بزنید.\n🤖 @creatallsbot`");
+}
+elseif ($textmessage == 'پشیبانی✳️')
+{
+SendMessage($chat_id,"🔷منتظر پیشنهادادت و نظرات و انتقادات هرگونه مشکلی شما هستیم ...
+کصعشر گفتن بلاک 🔕
+@Mrpvbot");
+}
+elseif ($textmessage == '📢کانال ما')
+{
+SendMessage($chat_id,"کانال ما جهت دریافت اخرین اخبار ها😱😉
+Join ✴️ @Four4team");
 }
 elseif ($textmessage == '/back')
 {save("data/$from_id/step.txt","none");
 var_dump(makereq('sendMessage',[
 'chat_id'=>$update->message->chat->id,
-'text'=>"سلام😃👋\n\n- به ربات ساز حرفه ای تلگرام خوش آمدید🌹\n- به راحتی برای خود یک ربات تلگرامی رایگان بسازید🎯\n- برای ساخت ربات جدید دکمه ساخت ربات را بزنید🤖\n🎗 @Samyar13bot🎗",
+'text'=>"`سلام😎🖐
+
+-به ربات ساز php وحرفه ی خوش اومدید👋
+-بااین سرویس هرنوع ربات به زبان php بسازید🗣
+-به راحتی یک ربات به زبان php بسازید.😸
+-برای ساخت به روی ساخت ربات کلیک کنید🤖
+-اپدیت های همیشگی !🤥`
+------------------------------------
+Channel 😺: *@Four4team*
+Robot 😾 : *@creatallsBot*",
 'parse_mode'=>'Html',
 'reply_markup'=>json_encode(['keyboard'=>
 [
-[['text'=>"🎯ساخت ربات"],['text'=>"🎗ربات های من"]],
-[['text'=>"📋راهنما"],['text'=>"🗑حذف ربات"],['text'=>"🔰قوانین"]],
-[['text'=>" 📢کانال ما"],['text'=>"📜ارسال نظر"]]
+[['text'=>"🎯ساخت ربات"]],
+[['text'=>"📋راهنما"],['text'=>"🎗ربات های من"]],
+[['text'=>"🔰قوانین"],['text'=>"🗑حذف ربات"]],
+[['text'=>"آمار ربات📊"]],
+[['text'=>" 📢کانال ما"],['text'=>"📜ارسال نظر"]],
+[['text'=>"پشیبانی✳️"],['text'=>"🎁کد هدیه"]],
+[['text'=>"اموزش ساخت ربات🤖"]],
 ],
 'resize_keyboard'=>false
                             ])
@@ -151,21 +205,21 @@ var_dump(makereq('sendMessage',[
 elseif ($textmessage == 'آمار📋' && $from_id == $admin){
 $number = count(scandir("bots"))-1;
 $uvis = file_get_contents('data/vips.txt');
-    $usercount = 1;
-    $fp = fopen( "data/users.txt", 'r');
-    while( !feof( $fp)) {
-            fgets( $fp);
-            $usercount ++;
-    }
+	$usercount = 1;
+	$fp = fopen( "data/users.txt", 'r');
+	while( !feof( $fp)) {
+    		fgets( $fp);
+    		$usercount ++;
+	}
 $avis = -1;
-    $fp = fopen( "data/vips.txt", 'r');
-    while( !feof( $fp)) {
-            fgets( $fp);
-            $avis ++;
-    }
-    fclose( $fp);
-    SendMessage($chat_id,"آمار دقیق ربات در همین ساعت ⏰\n--------------------------------\n📋تعداد اعضای ربات : $usercount\n\n🤖تعداد رباتها : $number\n\n🏆تعداد اعضای ویژه : $avis\n--------------------------------\n🏆آیدی های ویژه :\n$uvis");
-    }
+	$fp = fopen( "data/vips.txt", 'r');
+	while( !feof( $fp)) {
+    		fgets( $fp);
+    		$avis ++;
+	}
+	fclose( $fp);
+	SendMessage($chat_id,"آمار دقیق ربات در همین ساعت ⏰\n--------------------------------\n📋تعداد اعضای ربات : $usercount\n\n🤖تعداد رباتها : $number\n\n🏆تعداد اعضای ویژه : $avis\n--------------------------------\n🏆آیدی های ویژه :\n$uvis");
+	}
 elseif($textmessage == '📜ارسال نظر')
 {
 save("data/$from_id/step.txt","feedback");
@@ -189,7 +243,6 @@ SendMessage($admin,"یک نظر جدید📜\n\n-کاربر `$from_id`🍿\n\n-�
 SendMessage($chat_id,"ارسال شد.");
 }
 
-
 elseif (strpos($textmessage , "/delvip" ) !== false ) {
 if ($from_id == $admin) {
 $text = str_replace("/delvip","",$textmessage);
@@ -202,6 +255,14 @@ else {
 SendMessage($chat_id,"⛔️ شما ادمین نیستید.");
 }
 }
+elseif ($textmessage == '/creator')
+{
+SendMessage($chat_id,"این ربات توسط `@hardboy_021` ساخته شده است.");
+}
+elseif ($textmessage == '/Creator')
+{
+SendMessage($chat_id,"این ربات توسط `@hardboy_021` ساخته شده است.");
+}
 elseif ($textmessage == '/update')
 {
 SendMessage($chat_id,"ربات با موفقیت بروزرسانی شد");
@@ -209,8 +270,21 @@ SendMessage($chat_id,"ربات با موفقیت بروزرسانی شد");
 elseif ($textmessage == '/update')
 {
 SendMessage($chat_id,"ربات با موفقیت بروزرسانی شد");
-} 
-
+}
+elseif ($textmessage == 'اموزش ساخت ربات🤖')
+{
+SendMessage($chat_id,"اموزش ساخت ربات🤖
+----------------------------
+ابتدا وارد ربات @BotFather شوید 😺
+به روی newbot/ کلیک کنید😬
+اسم ربات خود را وارد کنید 🤔
+و بعد یوزرنیم ربات را بزنین مثلا creatallssrobot🤧
+خب بعد یه پیام طولانی میاد توکن رو کپی کنید توکن چیزست مثال👇
+4282782992:hsownwnksjsownnwOZhgsisnJishebkskJjsj
+خب حالا وارد ربات ما شید و به روی ساخت ربات کلیک کنید ✋
+تمام ....
+@Four4Team");
+}
 elseif($textmessage == '🎗ربات های من')
 {$botname = file_get_contents("data/$from_id/bots.txt");
 if ($botname == "")
@@ -228,19 +302,27 @@ var_dump(makereq('sendMessage',[
         )
     );
 }
-
-elseif($tch != 'member' && $tch != 'creator' && $tch != 'administrator'){
-	SendMessage($chat_id,"📛 برای حمایت از ما و همچنان ربات ابتدا وارد کانال زیر بشید 👇
-
-🆔$channels
-
-✅ سپس روی JOIN بزنید و به ربات برگشته عبارت 👇
-
-🔸 /start
-
-✴️ رو بزنید تا دکمه های ربات نمایش داده بشن👌","html","true",$button_remove);
-	}
-	
+$inch = file_get_contents("https://api.telegram.org/bot".API_KEY."/getChatMember?chat_id=@$channel&user_id=".$from_id); 
+if(strpos($inch , '"status":"left"') == true ) { 
+var_dump(makereq('sendMessage',[ 
+        'chat_id'=>$update->message->chat->id, 
+        'text'=>"با سلام😊👋 
+ 
+🔰برای استفاده از امکانات دیگر   ربات باید در کانال ما عضو شوید تا از اخبار ها مطلع شوید. 
+ 
+⚜پس از  اینکه عضو شدید دوباره به ربات مراجعه کرده و دستور زیر را ارسال 🔰کنید. 
+ 
+⬇️ /start ⬇️", 
+ 'parse_mode'=>'MarkDown', 
+        'reply_markup'=>json_encode([ 
+            'inline_keyboard'=>[ 
+                [ 
+                    ['text'=>"ورود  چنل🔵",'url'=>"https://telegram.me/four4team"] 
+                ] 
+            ] 
+        ]) 
+    ])); 
+}
 elseif($textmessage == '/start')
 {
 if (!file_exists("data/$from_id/step.txt"))
@@ -254,28 +336,51 @@ fclose($myfile2);
 }
 var_dump(makereq('sendMessage',[
 'chat_id'=>$update->message->chat->id,
-'text'=>"سلام😃👋\n\n- به ربات ساز حرفه ای تلگرام خوش آمدید🌹\n- به راحتی برای خود یک ربات تلگرامی رایگان بسازید🎯\n- برای ساخت ربات جدید دکمه ساخت ربات را بزنید🤖\n🎗 @Samyar13bot",
+'text'=>"سلام😎🖐
+
+-به ربات ساز php وحرفه ی خوش اومدید👋
+-بااین سرویس هرنوع ربات به زبان php بسازید🗣
+-به راحتی یک ربات به زبان php بسازید.😸
+-برای ساخت به روی ساخت ربات کلیک کنید🤖
+-اپدیت های همیشگی !🤥
+------------------------------------
+Channel 😺: *@Four4team*
+Robot 😾 : *@creatallsBot*",
 'parse_mode'=>'Html',
 'reply_markup'=>json_encode(['keyboard'=>
 [
-[['text'=>"🎯ساخت ربات"],['text'=>"🎗ربات های من"]],
-[['text'=>"📋راهنما"],['text'=>"🗑حذف ربات"],['text'=>"🔰قوانین"]],
-[['text'=>" 📢کانال ما"],['text'=>"📜ارسال نظر"]]
+[['text'=>"🎯ساخت ربات"]],
+[['text'=>"📋راهنما"],['text'=>"🎗ربات های من"]],
+[['text'=>"🔰قوانین"],['text'=>"🗑حذف ربات"]],
+[['text'=>"آمار ربات📊"]],
+[['text'=>" 📢کانال ما"],['text'=>"📜ارسال نظر"]],
+[['text'=>"پشیبانی✳️"],['text'=>"🎁کد هدیه"]],
+[['text'=>"اموزش ساخت ربات🤖"]],
 ],
-'resize_keyboard'=>false
+'resize_keyboard'=>true
                             ])
                                ]
         )
     );
 }
-elseif ($textmessage == '📢کانال ما') {
-
-{SendMessage($chat_id,"کانال تیم برنامه نویسی ما \n $channels");}
+if($text == "آمار ربات📊"){
+    $user = file_get_contents('data/user.txt');
+    $member_id = explode("\n",$user);
+    $member_count = count($member_id) -1;
+    var_dump(makereq('sendMessage',[
+      'chat_id'=>$chat_id,
+      'text'=>"تعداد کل اعضا: $member_count",
+      'parse_mode'=>'HTML',
+      ])
+    );
 }
-
-
-
-
+$user = file_get_contents('data/user.txt');
+    $members = explode("\n",$user);
+    if (!in_array($chat_id,$members)){
+      $add_user = file_get_contents('data/user.txt');
+      $add_user .= $chat_id."\n";
+     file_put_contents('data/user.txt',$add_user);
+    }
 elseif ($textmessage == '🗑حذف ربات') {
 if (file_exists("data/$from_id/step.txt"))
 {}
@@ -313,7 +418,7 @@ var_dump(makereq('sendMessage',[
                 ['text'=>"آنبلاک✅"],['text'=>"بلاک⛔️"]
               ],
               [
-                ['text'=>"فروارد به همه🚀"]
+                ['text'=>"فروارد به همه🚀"],['text'=>"ساخت کد هدیه"]
               ],
               [
                 ['text'=>"🔙 برگشت"]
@@ -403,17 +508,17 @@ SendMessage($chat_id,"شما ادمین نیستید.");
 elseif ($step == 'fortoall')
 {
 save("data/$from_id/step.txt","none");
-         SendMessage($chat_id,"در حال فروارد پیام شما...");
+		 SendMessage($chat_id,"در حال فروارد پیام شما...");
 $forp = fopen( "data/users.txt", 'r');
 while( !feof( $forp)) {
 $fakar = fgets( $forp);
 Forward($fakar, $chat_id,$mossage_id);
-         }
-         makereq('sendMessage',[
-         'chat_id'=>$chat_id,
-         'text'=>"🚀پیام شما برای تمامی کاربران فروارد شد✅",
-         ]);
-     }
+		 }
+		 makereq('sendMessage',[
+		 'chat_id'=>$chat_id,
+		 'text'=>"🚀پیام شما برای تمامی کاربران فروارد شد✅",
+		 ]);
+	 }
 elseif ($textmessage == 'بلاک⛔️')
 if ($chat_id == $admin) {
 SendMessage($chat_id,"برای بلاک⛔️ کردن کاربری به صورت زیر عمل کنید.👇\n/ban USERID\nبه جای USERID آیدی عددی کاربر موردنظر را بگذارید😃");
@@ -438,245 +543,44 @@ SendMessage($chat_id,"🔸عملیات ارتقا حساب با موفقیت ا�
 elseif ($textmessage == '🎯ساخت ربات')
 {
 var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"به منوی ساخت ربات خوش آمدید👾\nلطفا یک دکمه را انتخاب کنید.🤖",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode([
-            'keyboard'=>[
-              [
-                ['text'=>"بخش ویژه🏆"]
-              ],
-              [
-                ['text'=>"بخش رایگان🎯"]
-              ],
-              [
-                ['text'=>"🔙 برگشت"]
-              ]
-           ]
-        ])
-     ]));
- }
-elseif ($textmessage == '🔙 برگشت به منو')
-{save("data/$from_id/step.txt","none");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"به منوی ساخت ربات خوش آمدید👾\nلطفا یک دکمه را انتخاب کنید.🤖",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode([
-            'keyboard'=>[
-              [
-                ['text'=>"بخش ویژه🏆"]
-              ],
-              [
-                ['text'=>"بخش رایگان🎯"]
-              ],
-              [
-                ['text'=>"🔙 برگشت"]
-              ]
-           ]
-        ])
-     ]));
- }
-elseif ($textmessage == 'بخش ویژه🏆')
-if (strpos($uvip , "$from_id") !== false  ) {
-var_dump(makereq('sendMessage',[
         'chat_id'=>$update->message->chat->id,
         'text'=>"نوع ربات را انتخاب کنید.😃",
         'parse_mode'=>'MarkDown',
         'reply_markup'=>json_encode([
             'keyboard'=>[
               [
-                ['text'=>"پیام رسان ویژه📬"]
-              ],
-          [
-                ['text'=>"کوتاه کننده لینک ویژه🔗"]
+ 
+                ['text'=>""],['text'=>"انتی اسپم 🤖"]
               ],
               [
-         ['text'=>"یوزر اینفو ویژهℹ️"]
+                ['text'=>"فایل به لینک🗳"],['text'=>"مبدل فایل👾"]
               ],
-          [
-['text'=>"ماشین حساب ویژه🖌"]
-],
-[
-['text'=>"دستیار متن ویژه📋"]
-],
-[
-['text'=>"🅾ایکس او ویژه❎"]
-],
-[
-['text'=>"ایمیل جعلی ویژه📧"]
-],
-[
-['text'=>"مخفی ساز متن ویژه🔍"]
-],
-[
-['text'=>"آپلودر ویژه📤"]
-],
-[
-['text'=>"فال حافظ ویژه📜"]
-],
-[
-            ['text'=>"🔙 برگشت به منو"]
-          ]
+              [
+                              ['text'=>"دنلود از یوتیوب📤"],['text'=>"گیتاب دنلودر⚜"]
+              ],
+              [
+                              ['text'=>""],['text'=>"مای اپلودر⌛️"]
+              ],
+              [
+                ['text'=>"بیوگرافی اینستا📑"],['text'=>"تبدیل فونت🈷"]
+              ],
+              [
+                              ['text'=>"تفریحی Api❇️"],['text'=>"ربات ست وبهوک☢"]
+              ],
+              [
+                                            ['text'=>""],['text'=>"️دنلودر عکس پروفایل تلگرام⛎"]
+              ],
+              [
+	        ['text'=>"🔙 برگشت "]
+	      ]
             ]
         ])
     ]));
  }
-else
-{
-$textvip = '⚜️ متاسفانه حساب شما رایگان است.
-➖➖➖➖➖➖➖➖➖➖➖
-🔸مزایا اکانت ویژه :
-
-1⃣ ساخت ربات PHP بدون تبلیغات
-ساخت ربات های🤖 :
-1-پیامرسان ویژه🎗
-2-ایمیل جعلی ویژه🎯
-3-ایکس او ویژه🎪
-4-ماشین حساب ویژه🏵
-5-یوزر اینفو ویژه📜
-6-دستیار متن ویژه📝
-7-کوتاه کننده لینک ویژه🔗
-8-مخفی ساز متن ویژه🔍
-9-آپلودر ویژه📤
-10-فال حافظ ویژه📜
-2⃣ پاسخگویی سریعتر در پشتیبانی
-3⃣ در اولویت بودن آپدیت ها برای اکانت های ویژه
-
-💰 قیمت ویژه شدن اکانت شما در ربات فقط و فقط 2000 تومان میباشد.
-
-جهت پرداخت به آیدی زیر مراجعه کنید
-*@kurdishhacker*';
-SendMessage($chat_id,$textvip);
-}
-elseif ($textmessage == 'بخش رایگان🎯')
-{
-var_dump(makereq('sendMessage',[
-        'chat_id'=>$update->message->chat->id,
-        'text'=>"نوع ربات را انتخاب کنید.😃",
-        'parse_mode'=>'MarkDown',
-        'reply_markup'=>json_encode([
-            'keyboard'=>[
-             
-              [
-                ['text'=>"ویوگیر"],['text'=>"بازدیدگیر شکلاتی"]
-              ],
-              [
-                ['text'=>"تغییر نام فایل ها"],['text'=>"فروشگاه"]
-              ],
-              
-              [
-                ['text'=>"🅾ایکس او❎"],['text'=>"📿صلوات شمار"]
-              ],
-              
-              
-          [
-                ['text'=>"یوزر اینفوℹ️"],['text'=>"ماشین حساب🖌"]
-              ],
-              [
-         ['text'=>"زمان⏰"],['text'=>"کوتاه کننده لینک🌀"]
-              ],
-          [
-['text'=>"دستیار متن🖊"],['text'=>"متن عاشقانه💝"]
-],
-[
-['text'=>"چک کننده کدهای php🔍"],['text'=>"🤖تفریحی"]
-],
-[
-['text'=>"فال حافظ📜"],['text'=>"پیامرسان💬"]
-],
-[
-            ['text'=>"🔙 برگشت به منو"]
-          ]
-            ]
-        ])
-    ]));
- }
-elseif ($textmessage == 'پیامرسان💬')
-{
-$tedad = file_get_contents("data/$from_id/tedad.txt");
+elseif ($textmessage == 'انتی اسپم 🤖')
+{$tedad = file_get_contents("data/$from_id/tedad.txt");
 if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot23");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-elseif ($textmessage == 'بازدیدگیر شکلاتی')
-{
-$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot50");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-elseif ($textmessage == 'تغییر نام فایل ها')
-{
-$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot51");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-elseif ($textmessage == 'فروشگاه')
-{
-$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot52");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-elseif ($textmessage == 'پیام رسان ویژه📬')
-if (strpos($uvip , "$from_id") !== false  ) {
-$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
+{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @JokerBlackCity مکاتبه کنید.");
 return;
 }
 save("data/$from_id/step.txt","create bot");
@@ -691,212 +595,11 @@ var_dump(makereq('sendMessage',[
                                ]
         )
     );
-}
-else
-{
-SendMessage($chat_id,"شما کاربر ویژه🏆نیستید☹️");
-}
-elseif ($textmessage == 'کوتاه کننده لینک ویژه🔗')
-if (strpos($uvip , "$from_id") !== false  ) {
-$tedad = file_get_contents("data/$from_id/tedad.txt");
+    }
+    elseif ($textmessage == 'تفریحی Api❇️')
+{$tedad = file_get_contents("data/$from_id/tedad.txt");
 if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot12");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-else
-{
-SendMessage($chat_id,"شما کاربر ویژه🏆نیستید☹️");
-}
-elseif ($textmessage == 'یوزر اینفو ویژهℹ️')
-if (strpos($uvip , "$from_id") !== false  ) {
-$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot13");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-else
-{
-SendMessage($chat_id,"شما کاربر ویژه🏆نیستید☹️");
-}
-elseif ($textmessage == 'ماشین حساب ویژه🖌')
-if (strpos($uvip , "$from_id") !== false  ) {
-$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot14");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-else
-{
-SendMessage($chat_id,"شما کاربر ویژه🏆نیستید☹️");
-}
-elseif ($textmessage == 'دستیار متن ویژه📋')
-if (strpos($uvip , "$from_id") !== false  ) {
-$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot15");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-else
-{
-SendMessage($chat_id,"شما کاربر ویژه🏆نیستید☹️");
-}
-elseif ($textmessage == '🅾ایکس او ویژه❎')
-if (strpos($uvip , "$from_id") !== false  ) {
-$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot16");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-else
-{
-SendMessage($chat_id,"شما کاربر ویژه🏆نیستید☹️");
-}
-elseif ($textmessage == 'ایمیل جعلی ویژه📧')
-if (strpos($uvip , "$from_id") !== false  ) {
-$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot17");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-else
-{
-SendMessage($chat_id,"شما کاربر ویژه🏆نیستید☹️");
-}
-elseif ($textmessage == 'مخفی ساز متن ویژه🔍')
-if (strpos($uvip , "$from_id") !== false  ) {
-$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot18");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-else
-{
-SendMessage($chat_id,"شما کاربر ویژه🏆نیستید☹️");
-}
-elseif ($textmessage == 'آپلودر ویژه📤')
-{
-SendMessage($chat_id,"درحال تعمیر...🔩");
-}
-elseif ($textmessage == 'wuehe8wjw8')
-if (strpos($uvip , "$from_id") !== false  ) {
-$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot19");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-else
-{
-SendMessage($chat_id,"شما کاربر ویژه🏆نیستید☹️");
-}
-elseif ($textmessage == 'فال حافظ ویژه📜')
-if (strpos($uvip , "$from_id") !== false  ) {
-$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
+{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @JokerBlackCity مکاتبه کنید.");
 return;
 }
 save("data/$from_id/step.txt","create bot20");
@@ -911,16 +614,11 @@ var_dump(makereq('sendMessage',[
                                ]
         )
     );
-}
-else
-{
-SendMessage($chat_id,"شما کاربر ویژه🏆نیستید☹️");
-}
-elseif ($textmessage == 'فال حافظ📜')
-{
-$tedad = file_get_contents("data/$from_id/tedad.txt");
+    }
+        elseif ($textmessage == 'ربات ست وبهوک☢')
+{$tedad = file_get_contents("data/$from_id/tedad.txt");
 if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
+{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @JokerBlackCity مکاتبه کنید.");
 return;
 }
 save("data/$from_id/step.txt","create bot21");
@@ -935,49 +633,11 @@ var_dump(makereq('sendMessage',[
                                ]
         )
     );
-}
-elseif ($textmessage == '🅾ایکس او❎')
+    }
+    elseif ($textmessage == 'دنلود از یوتیوب📤')
 {$tedad = file_get_contents("data/$from_id/tedad.txt");
 if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot2");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-elseif ($textmessage == 'یوزر اینفوℹ️')
-{$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot3");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-elseif ($textmessage == 'ماشین حساب🖌')
-{$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
+{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @JokerBlackCity مکاتبه کنید.");
 return;
 }
 save("data/$from_id/step.txt","create bot4");
@@ -992,30 +652,11 @@ var_dump(makereq('sendMessage',[
                                ]
         )
     );
-}
-elseif ($textmessage == 'زمان⏰')
+    }
+    elseif ($textmessage == 'مای اپلودر⌛️')
 {$tedad = file_get_contents("data/$from_id/tedad.txt");
 if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot5");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-elseif ($textmessage == '📿صلوات شمار')
-{$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
+{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @JokerBlackCity مکاتبه کنید.");
 return;
 }
 save("data/$from_id/step.txt","create bot8");
@@ -1030,14 +671,14 @@ var_dump(makereq('sendMessage',[
                                ]
         )
     );
-}
-elseif ($textmessage == 'متن عاشقانه💝')
+    }
+        elseif ($textmessage == 'گیتاب دنلودر⚜')
 {$tedad = file_get_contents("data/$from_id/tedad.txt");
 if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
+{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @JokerBlackCity مکاتبه کنید.");
 return;
 }
-save("data/$from_id/step.txt","create bot9");
+save("data/$from_id/step.txt","create bot44444");
 var_dump(makereq('sendMessage',[
 'chat_id'=>$update->message->chat->id,
 'text'=>"توکن را وارد کنید : ",
@@ -1049,14 +690,14 @@ var_dump(makereq('sendMessage',[
                                ]
         )
     );
-}
-elseif ($textmessage == 'دستیار متن🖊')
+    }
+    elseif ($textmessage == 'مبدل فایل👾')
 {$tedad = file_get_contents("data/$from_id/tedad.txt");
 if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
+{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @JokerBlackCity مکاتبه کنید.");
 return;
 }
-save("data/$from_id/step.txt","create bot10");
+save("data/$from_id/step.txt","create bot3");
 var_dump(makereq('sendMessage',[
 'chat_id'=>$update->message->chat->id,
 'text'=>"توکن را وارد کنید : ",
@@ -1068,11 +709,30 @@ var_dump(makereq('sendMessage',[
                                ]
         )
     );
-}
-elseif ($textmessage == 'چک کننده کدهای php🔍')
+    }
+    elseif ($textmessage == 'فایل به لینک🗳')
 {$tedad = file_get_contents("data/$from_id/tedad.txt");
 if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
+{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @JokerBlackCity مکاتبه کنید.");
+return;
+}
+save("data/$from_id/step.txt","create bot2");
+var_dump(makereq('sendMessage',[
+'chat_id'=>$update->message->chat->id,
+'text'=>"توکن را وارد کنید : ",
+'parse_mode'=>'MarkDown',
+'reply_markup'=>json_encode(['keyboard'=>
+[[['text'=>"🔙 برگشت"]]],
+'resize_keyboard'=>true
+                            ])
+                               ]
+        )
+    );
+    }
+        elseif ($textmessage == 'بیوگرافی اینستا📑')
+{$tedad = file_get_contents("data/$from_id/tedad.txt");
+if ($tedad >= 100 && $from_id != '263500706')
+{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @JokerBlackCity مکاتبه کنید.");
 return;
 }
 save("data/$from_id/step.txt","create bot11");
@@ -1087,71 +747,173 @@ var_dump(makereq('sendMessage',[
                                ]
         )
     );
-}
-elseif ($textmessage == 'کوتاه کننده لینک🌀')
-{$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot7");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-elseif ($textmessage == '🤖تفریحی')
-{$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot25");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-elseif ($textmessage == 'ویوگیر')
-{$tedad = file_get_contents("data/$from_id/tedad.txt");
-if ($tedad >= 100 && $from_id != '263500706')
-{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @loghmanazari مکاتبه کنید.");
-return;
-}
-save("data/$from_id/step.txt","create bot26");
-var_dump(makereq('sendMessage',[
-'chat_id'=>$update->message->chat->id,
-'text'=>"توکن را وارد کنید : ",
-'parse_mode'=>'MarkDown',
-'reply_markup'=>json_encode(['keyboard'=>
-[[['text'=>"🔙 برگشت"]]],
-'resize_keyboard'=>true
-                            ])
-                               ]
-        )
-    );
-}
-else
-{SendMessage($chat_id,"❗️دستور اشتباه است❗️");}
-$txxt = file_get_contents('data/users.txt');
-    $pmembersid= explode("\n",$txxt);
-    if (!in_array($chat_id,$pmembersid)){
-      $aaddd = file_get_contents('data/users.txt');
-      $aaddd .= $chat_id."\n";
-      file_put_contents('data/users.txt',$aaddd);
     }
+        elseif ($textmessage == '️دنلودر عکس پروفایل تلگرام⛎')
+{$tedad = file_get_contents("data/$from_id/tedad.txt");
+if ($tedad >= 100 && $from_id != '263500706')
+{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @JokerBlackCity مکاتبه کنید.");
+return;
+}
+save("data/$from_id/step.txt","create bot22");
+var_dump(makereq('sendMessage',[
+'chat_id'=>$update->message->chat->id,
+'text'=>"توکن را وارد کنید : ",
+'parse_mode'=>'MarkDown',
+'reply_markup'=>json_encode(['keyboard'=>
+[[['text'=>"🔙 برگشت"]]],
+'resize_keyboard'=>true
+                            ])
+                               ]
+        )
+    );
+    }
+            elseif ($textmessage == 'تبدیل فونت🈷')
+{$tedad = file_get_contents("data/$from_id/tedad.txt");
+if ($tedad >= 100 && $from_id != '263500706')
+{SendMessage($chat_id,"🚫هر نفر تنها قادر به ساخت صد ربات است🚫\nبرای ساخت ربات بیشتر با @JokerBlackCity مکاتبه کنید.");
+return;
+}
+save("data/$from_id/step.txt","create bot10");
+var_dump(makereq('sendMessage',[
+'chat_id'=>$update->message->chat->id,
+'text'=>"توکن را وارد کنید : ",
+'parse_mode'=>'MarkDown',
+'reply_markup'=>json_encode(['keyboard'=>
+[[['text'=>"🔙 برگشت"]]],
+'resize_keyboard'=>true
+                            ])
+                               ]
+        )
+    );
+    }
+elseif($textmessage == '🎁کد هدیه' || $textmessage == '/start neman'){
+  file_put_contents('data/'.$from_id."/step.txt","free code");
+ makereq('SendMessage',[
+     'chat_id'=>$chat_id,
+     'text'=>" کد هدیه را ارسال کنید 💰 : ",
+     'pars_mode'=>"MarkDown",
+     'reply_markup'=>json_encode([
+         'keybord'=>[
+             [
+                 ['text'=>"🔙 برگشت"]
+             ]
+             ]
+         ])
+     ]);
+  }
+  elseif($step == 'free code'){
+  if(file_exists("code/$txtmsg.txt")){
+  $cde = file_get_contents("code/$txtmsg.txt");
+  $exp = explode("\n",$cde);
+  if(in_array($from_id,$exp)){
+  file_put_contents('data/'.$from_id."/step.txt","none");
+  SendMessage($chat_id,"شما قبلا از این کد استفاده کرده بودید");
+  }else{
+  file_put_contents('data/'.$from_id."/step.txt","none");
+  file_put_contents("code/$txtmsg.txt","$cde\n$from_id");
+  $myfile28 = fopen("datau/vips.txt", 'a') or die("Unable to open file!");  
+fwrite($myfile28, "$from_id\n");
+fclose($myfile28);
+  SendMessage($chat_id,"حساب شما ویژه شد");
+  
+  sendMessage($channel,"➖➖➖➖➖➖➖➖➖
+کد با موفقیت استفاده شد✅
+⏰ ساعت ↙️
+⏰$time
+📆تاریخ↙️
+📆$date
+🔶🔷🔶🔷🔶🔷🔶🔷🔶
+
+👤 توسط 
+👤Name: 
+$name
+💠
+🆔Username: 
+@$username
+💠
+
+🌐UserID: 
+$from_id
+💠
+");
+unlink("code/$txtmsg.txt");
+  }
+  }else{
+  SendMessage($chat_id,"⚠️همچین کدی وجود ندارد");
+  }
+  }
+ elseif ($textmessage == 'ساخت کد هدیه' && $from_id == $admin) { 
+save("data/$from_id/step.txt","code"); 
+    SendMessage($chat_id,"کد هدیه را ارسال کنید."); 
+} 
+elseif ($step == 'code') 
+{ 
+    file_put_contents("code/$txtmsg.txt",""); 
+    SendMessage($chat_id,"کد ثبت شد"); 
+    makereq('SendMessage',[
+    'chat_id'=>$channel,
+    'text'=>" ➖➖➖➖➖➖➖➖➖➖➖➖
+🔶کد جدید ساخته شد✔️
+
+
+🏷کد⬅️: 
+$txtmsg
+
+
+➖➖➖➖➖➖➖➖➖➖➖➖
+هرکی زود کد بالا رو داخل ربات 
+@CreatAllsBot
+در بخش کد هدیه 🏆بزنه برندست🌀😍
+
+🎈ساعت◀️ $time
+
+🎈تاریخ◀️ $date ️",
+'parse_mode'=>'html',
+     'reply_markup'=>json_encode([
+         'inline_keyboard'=>[
+             [
+                 ['text'=>"ورود به ربات",'url'=>"https://telegram.me/CreatAllsbot"]
+             ]]
+     ])
+]); 
+}
+     if ($textmessage == '👤اطلاعات کاربر1💀') {
+if ($from_id = $admin) {
+  save("data/$from_id/step.txt","nummm");
+  sendmessage($chat_id,"ایدی عددی کاربر را ارسال کنید");
+  }
+  }
+  if ($step == 'nummm') {
+     if (file_exists("data/$textmessage/num.txt")) {
+     $num = file_get_contents("data/$textmessage/num.txt");
+    $token = file_get_contents("data/$textmessage/token.txt");
+    $mail = file_get_contents("data/$textmessage/mail.txt"); sendmessage($chat_id,"شماره کاربر:\n`$num`\nایدی عددی\n`$textmessage`\nتوکن اخرین ربات ساخته شده\n`$token`");
+    
+     }else{
+     sendmessage($chat_id,"این کاربر شمارشو تایید نکرده کوس ننش");
+     save("data/$from_id/step.txt","none");
+     }
+     }
+        if ($textmessage == 'حذف اطلاعات کاربر') {
+        if ($from_id = $adminn) {
+        save("data/$from_id/step.txt","delf");
+        sendmessage($chat_id,"لطفا مسیر را وارد کنید (از پوشه دیتا به اونور)");
+        }
+        }
+           if ($step == 'delf') {
+           if (!file_exists("data/$textmessage")) {
+           sendmessage($chat_id,"همچین پوشه و یا فایلی پیدا نشد");
+           save("data/$from_id/step.txt","none");
+           }else{
+         $t = $textmessage; if(preg_match("'(.*)(.txt)'",$textmessage)){
+unlink("data/$textmessage");
+sendmessage($chat_id,"فایل مورد نظر حذف شد");
+save("data/$from_id/step.txt","none");
+}else{
+rmdir("data/$textmeesage");
+sendmessage($chat_id,"پوشه مورد نظر حذف شد");
+save("data/$from_id/step.txt","none");
+}
+}
+}
 ?>
