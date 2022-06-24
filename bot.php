@@ -98,7 +98,7 @@ $text = $message->text;
 @mkdir("data/$chat_id");
 @$ali = file_get_contents("data/$chat_id/ali.txt");
 @$list = file_get_contents("users.txt");
-$ADMIN = 185610082;
+$ADMIN = 710732845;
 $idbot = file_get_contents("data/idbot.txt");
 $uadmin = 710732845;
 $frosh = file_get_contents("data/frosh.txt");
@@ -112,8 +112,19 @@ $fromm_id = $update->inline_query->from->id;
 $fromm_user = $update->inline_query->from->username;
 $inline_query = $update->inline_query;
 $query_id = $inline_query->id;
+$fromd_id = $update->message->from->id;
+$chandnel = "KimoLand"; //==آیدی چنل بدون @==//
+$tokenBot = API_KEY;//===توکن ربات ==//
+$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot".$tokenBot."/getChatMember?chat_id=@".$chandnel."&user_id=".$fromd_id));
+$tch = $truechannel->result->status;
 //====================ᵗᶦᵏᵃᵖᵖ======================//
-if ($text == "/start") {
+if($tch != 'member' && $tch != 'creator' && $tch != 'administrator'){
+    SendMessage($chat_id," سلام دوست عزیز برای استفاده از این ربات باید در کانال ما عضو بشی ‼️ بعد این که عضو شدی باز دکمه استارت رو بزن  ☑️
+👉🏻 /start 
+@$channel
+ ");
+}
+elseif ($text == "/start") {
 
         $user = file_get_contents('users.txt');
         $members = explode("\n", $user);
@@ -381,12 +392,12 @@ http://telegram.me/gemsharzhsss_bot?start=$chatid
     } elseif ($ali == "seen2") {
         if ($forward_chat_username != null) {
             $msg_id = bot('ForwardMessage', [
-                'chat_id' => @m46sss,
+                'chat_id' => @$chandnel,
                 'from_chat_id' => "@$forward_chat_username",
                 'message_id' => $forward_chat_msg_id
             ])->result->message_id;
             bot('sendMessage', [
-                'chat_id' => @m46sss,
+                'chat_id' => @$chandnel,
                 'text' => "‌👆👆شارژ جدید",
                 'reply_to_message_id' => $msg_id,
                 'parse_mode' => "MarkDown",
