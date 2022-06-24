@@ -1,9 +1,9 @@
 <?php
 
-define('API_KEY', '1491491242:AAHX1Yj0f6hsI8fTDD_wg2DbAh355DGqPo4');
+define('API_KEY', '1529135125:AAESTjd32qwoLcH8qEU7fJFdRGKmFzyPjBY');
 $token = API_KEY;
 $userbot = "KingProxy7Bot";
-$channels = "King_network7";
+$channels = "kimoland";
 $logchchannel = "@KingProxyLog";
 $admin = 710732845;
 $server_free_1 = file_get_contents("https://kingproxy.de/p2-main/api/server1.php");
