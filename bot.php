@@ -108,7 +108,11 @@ $fromm_id = $update->inline_query->from->id;
 $fromm_user = $update->inline_query->from->username;
 $inline_query = $update->inline_query;
 $query_id = $inline_query->id;
-$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot1529135125:AAESTjd32qwoLcH8qEU7fJFdRGKmFzyPjBY/getChatMember?chat_id=KimoLand&user_id=$chat_id"));
+$channel = "KimoLand"; //==آیدی چنل بدون @==//
+$tokenBot = API_KEY;//===توکن ربات ==//
+//=====phpteam===//
+$from_id = $update->message->from->id;
+$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot".$tokenBot."/getChatMember?chat_id=@".$channel."&user_id=".$from_id));
 $tch = $truechannel->result->status;
 //====================ᵗᶦᵏᵃᵖᵖ======================//
 $ptn = json_encode([
@@ -131,20 +135,11 @@ $ptn = json_encode([
     ]
 ]);
 if($tch != 'member' && $tch != 'creator' && $tch != 'administrator'){
-    bot('sendmessage', [
-        'chat_id' => $chat_id,
-                   'text'=>"🙂با سلام و درود خدمت شما کاربر عزیز 
-                   $fromm_user
-   
-   برای ساخت فونت در ربات ما باید اول عضو کانال ما بشید
-   @KimoLand
-    و سپس به ربات برگشت و دستور 👇
-   | /start | 
-   رو ارسال کنید😉",
-   'parse_mode' => "MarkDown"
-   ]);
-   return false;
-   }
+    SendMessage($chat_id," سلام دوست عزیز برای استفاده از این ربات باید در کانال ما عضو بشی ‼️ بعد این که عضو شدی باز دکمه استارت رو بزن  ☑️
+👉🏻 /start 
+@$channel
+ ","html","true");
+}
 ////_________
 elseif ($text == "/start") {
 
