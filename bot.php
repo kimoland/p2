@@ -1,17 +1,8 @@
 <?php
-$telegram_ip_ranges = [
-    ['lower' => '149.154.160.0', 'upper' => '149.154.175.255'],
-    ['lower' => '91.108.4.0',    'upper' => '91.108.7.255'],
-];
-$ip_dec = (float) sprintf("%u", ip2long($_SERVER['REMOTE_ADDR']));
-$ok=false;
-foreach ($telegram_ip_ranges as $telegram_ip_range) if (!$ok) {
-    $lower_dec = (float) sprintf("%u", ip2long($telegram_ip_range['lower']));
-    $upper_dec = (float) sprintf("%u", ip2long($telegram_ip_range['upper']));
-    if ($ip_dec >= $lower_dec and $ip_dec <= $upper_dec) $ok=true;
-}
-if (!$ok) die("why?");
-error_reporting(0);
+
+set_time_limit(0);
+
+ob_start();
 
 $API_KEY = '1529135125:AAESTjd32qwoLcH8qEU7fJFdRGKmFzyPjBY';
 ##------------------------------##
@@ -107,9 +98,13 @@ $text = $message->text;
 @mkdir("data/$chat_id");
 @$ali = file_get_contents("data/$chat_id/ali.txt");
 @$list = file_get_contents("users.txt");
-$ADMIN = 710732845;
-$channel = file_get_contents("data/channel.txt");
-$channe2  = file_get_contents("data/channel2.txt");
+$ADMIN = 185610082;
+$idbot = file_get_contents("data/idbot.txt");
+$uadmin = 710732845;
+$frosh = file_get_contents("data/frosh.txt");
+$sharzh_h1000 = file_get_contents("data/channel.txt");
+$sharzh_ir300 = file_get_contents("data/channel2.txt");
+$listbon = file_get_contents("data/pen.txt");
 $chatid = $update->callback_query->message->chat->id;
 $data = $update->callback_query->data;
 $message_id2 = $update->callback_query->message->message_id;
@@ -117,40 +112,8 @@ $fromm_id = $update->inline_query->from->id;
 $fromm_user = $update->inline_query->from->username;
 $inline_query = $update->inline_query;
 $query_id = $inline_query->id;
-$channel = "KimoLand"; //==آیدی چنل بدون @==//
-$tokenBot = API_KEY;//===توکن ربات ==//
-//=====phpteam===//
-$fromd_id = $update->message->from->id;
-$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot".$tokenBot."/getChatMember?chat_id=@".$channel."&user_id=".$fromd_id));
-$tch = $truechannel->result->status;
 //====================ᵗᶦᵏᵃᵖᵖ======================//
-$ptn = json_encode([
-    'inline_keyboard' => [
-        [
-            ['text' => "1⃣", 'callback_data' => "c1"], ['text' => "2⃣", 'callback_data' => "c2"], ['text' => "3⃣", 'callback_data' => "c3"]
-        ],
-        [
-            ['text' => "4⃣", 'callback_data' => "c4"], ['text' => "5⃣", 'callback_data' => "c5"], ['text' => "6⃣", 'callback_data' => "c6"]
-        ],
-        [
-            ['text' => "7⃣", 'callback_data' => "c7"], ['text' => "8⃣", 'callback_data' => "c8"], ['text' => "9⃣", 'callback_data' => "c9"]
-        ],
-        [
-            ['text' => "چک کن😊", 'callback_data' => "chk"], ['text' => "0⃣", 'callback_data' => "c0"]
-        ],
-        [
-            ['text' => "ولش بریم منوی اصلی", 'callback_data' => "home"]
-        ],
-    ]
-]);
-if($tch != 'member' && $tch != 'creator' && $tch != 'administrator'){
-    SendMessage($chat_id," سلام دوست عزیز برای استفاده از این ربات باید در کانال ما عضو بشی ‼️ بعد این که عضو شدی باز دکمه استارت رو بزن  ☑️
-👉🏻 /start 
-@$channel
- ","html","true");
-}
-////_________
-elseif ($text == "/start") {
+if ($text == "/start") {
 
         $user = file_get_contents('users.txt');
         $members = explode("\n", $user);
@@ -165,47 +128,49 @@ elseif ($text == "/start") {
         sendAction($chat_id, 'typing');
         bot('sendmessage', [
             'chat_id' => $chat_id,
-            'text' => "به ربات nca(بازدیدگیرشکلاتی) خوش امدید❤️
-            
-سین و ویو رو به آسونی با من دریافت کنید😁
+            'text' => "سلام دوست عزیزم😄
 
-همین الان شروع کنید🤝👇",
+✳️ به ربات شارژ رایگان الماسی✨🌟💎
+
+خوش امدی🌹
+با این ربات به آسونی الماس جمع کن و شارژ دریافت کن✅",
             'parse_mode' => "MarkDown",
             'reply_markup' => json_encode([
                 'inline_keyboard' => [
                     [
-                        ['text' => "جمع اوری شکلات🙃", 'callback_data' => "a"]
+                        ['text' => "💎جمع کردن الماس رایگان💎", 'callback_data' => "d"]
                     ],
                     [
-                        ['text' => "زیرمجموعه گیری👥", 'callback_data' => "b"], ['text' => "ناحیه کاربری شما🙃", 'callback_data' => "c"]
+['text' => "دریافت10الماس برای عضویت کانال", 'url' => "http://telegram.me/sssteam"]
                     ],
                     [
-                        ['text' => "ثبت تبلیغ🤓", 'callback_data' => "e"], ['text' => "جابجایی 🔃شکلات🍬", 'callback_data' => "d"]
+                       
+                        ['text' => "😎مشخصات کاربر😎", 'callback_data' => "c"], ['text' => "💎انتقال الماس💎", 'callback_data' => "b"]
                     ],
                     [
-                        ['text' => "سوپر مارکت🎰", 'callback_data' => "f"], ['text' => "راهنما شکلاتی ها", 'callback_data' => "g"]
-                    ],
-                    [
-                        ['text' => "پیگیری سفارشات🤓", 'callback_data' => "h"], ['text' => "کد شکلاتی😋", 'callback_data' => "k"]
-                    ],
-                    [
-                        ['text' => "شکلات روزانه🍬", 'callback_data' => "j"]
+                        ['text' => "⁉️راهنمای ربات🤔", 'callback_data' => "g"], ['text' => "📊آمار ربات💎", 'callback_data' => "am"]
+                  ],
+                  [
+                        ['text' => "🌟دریافت شارژ رایگان🌟", 'callback_data' => "gemgem"]
                     ],
                     
                 ]
             ])
         ]);
     } elseif (strpos($penlist, "$from_id")) {
-        SendMessage($chat_id, "هی کاربر عزیز شما از سرور ما بلاک شدید  دیگه پیام ندید با تشکر");
+        SendMessage($chat_id, "کاربر گرامی شما از سرور ما مسدود شده اید لطفا دیگر پیام نفرستید
+باتشکر
+اگر اشتباهی مسدود شدید به مدیریت خبر دهید تا شمارا ازاد کند
+@adamimsss 👈ادمین");
     } elseif (strpos($text, '/start') !== false && $forward_chat_username == null) {
         $newid = str_replace("/start ", "", $text);
         if ($from_id == $newid) {
             bot('sendMessage', [
                 'chat_id' => $chat_id,
-                'text' => "چجور خودت میخوای با لینک خودت عضو رباتت بشی انوقت سکه هم میخوای",
+                'text' => "شما نمی توانید با لینک دعوت خود عضو ربات شوید و سکه ای دریافت نمی کنید✅",
             ]);
         } elseif (strpos($list, "$from_id") !== false) {
-            SendMessage($chat_id, "شما قبلا در این ربات عضو شدی و نمیتونی با لینک عضویت دوستت عضو ربات بشی😑");
+            SendMessage($chat_id, "شما قبلا در این ربات عضو شده بودید و نمی توانید با لینک اختصاصی دوستتان عضو ربات شوید");
         } else {
             sendAction($chat_id, 'typing');
             @$sho = file_get_contents("data/$newid/shoklat.txt");
@@ -227,38 +192,35 @@ elseif ($text == "/start") {
             sendmessage($chat_id, "تبریک شما با دعوت کاربر $newid عضو ربات ما شدید❤️");
             bot('sendmessage', [
                 'chat_id' => $chat_id,
-                'text' => "  به ربات nca(بازدیدگیرشکلاتی) خوش امدید❤️
+                'text' => "سلام دوست عزیزم😄
 
-سین و ویو رو به آسونی با من دریافت کنید😁
+✳️ به ربات شارژ رایگان الماسی✨🌟💎
 
-همین الان شروع کنید🤝👇",
+خوش امدی🌹
+با این ربات به آسونی الماس جمع کن و شارژ دریافت کن✅",
                 'parse_mode' => "MarkDown",
                 'reply_markup' => json_encode([
                     'inline_keyboard' => [
-                        [
-                            ['text' => "جمع اوری شکلات🙃", 'callback_data' => "a"]
-                        ],
-                        [
-                            ['text' => "زیرمجموعه گیری👥", 'callback_data' => "b"], ['text' => "ناحیه کاربری شما🙃", 'callback_data' => "c"]
-                        ],
-                        [
-                            ['text' => "ثبت تبلیغ🤓", 'callback_data' => "e"], ['text' => "جابجایی 🔃شکلات🍬", 'callback_data' => "d"]
-                        ],
-                        [
-                            ['text' => "سوپر مارکت🎰", 'callback_data' => "f"], ['text' => "راهنما شکلاتی ها", 'callback_data' => "g"]
-                        ],
-                        [
-                            ['text' => "پیگیری سفارشات🤓", 'callback_data' => "h"], ['text' => "کد شکلاتی😋", 'callback_data' => "k"]
-                        ],
-                        [
-                            ['text' => "شکلات روزانه🍬", 'callback_data' => "j"]
+                      [
+                        ['text' => "💎جمع کردن الماس رایگان💎", 'callback_data' => "d"]
+                    ],
+                    [
+['text' => "دریافت10الماس برای عضویت کانال", 'url' => "http://telegram.me/sssteam"]
+                   ],
+                   [
+                        ['text' => "😎مشخصات کاربر😎", 'callback_data' => "c"], ['text' => "💎انتقال الماس💎", 'callback_data' => "b"]
+                    ],
+                    [
+                        ['text' => "⁉️راهنمای ربات🤔", 'callback_data' => "g"], ['text' => "📊آمار ربات💎", 'callback_data' => "am"]
+                  ],
+                  [
+                        ['text' => "🌟دریافت شارژ رایگان🌟", 'callback_data' => "gemgem"]
                         ],
                     ]
                 ])
             ]);
-            SendMessage($newid, "تبریک یکی با لینک عضویت شما عوض ربات شد😊
-
-و شما 10تا شکلات گیرتومن امد😱");
+            SendMessage($newid, "تبریک یکی با لینک اختصاصی شما وارد ربات شد و 💎10
+الماس دریافت کردید");
         }
     }
     elseif ($data == "home") {
@@ -274,223 +236,34 @@ elseif ($text == "/start") {
             'message_id' => $message_id2,
             'text' => "
 به منوی اصلی برگشتید🙂
-سین و ویو رو به آسونی با من دریافت کنید😁
-همین الان شروع کنید🤝👇
+با من به اسانی برای بنرتان بازدید دریافت کنید
+لطفا از گزینه های زیر استفاده کنید✅
 
 ",
             'parse_mode' => "MarkDown",
             'reply_markup' => json_encode([
                 'inline_keyboard' => [
                     [
-                        ['text' => "جمع اوری شکلات🙃", 'callback_data' => "a"]
+                        ['text' => "💎جمع کردن الماس رایگان💎", 'callback_data' => "d"]
                     ],
                     [
-                        ['text' => "زیرمجموعه گیری👥", 'callback_data' => "b"], ['text' => "ناحیه کاربری شما🙃", 'callback_data' => "c"]
+['text' => "دریافت10الماس برای عضویت کانال", 'url' => "https://telegram.me/joinchat/AAAAAEOpk9e-IYi6FVPJLQ"]
                     ],
                     [
-                        ['text' => "ثبت تبلیغ🤓", 'callback_data' => "e"], ['text' => "جابجایی 🔃شکلات🍬", 'callback_data' => "d"]
+                       
+                        ['text' => "😎مشخصات کاربر😎", 'callback_data' => "c"], ['text' => "💎انتقال الماس💎", 'callback_data' => "b"]
                     ],
                     [
-                        ['text' => "سوپر مارکت🎰", 'callback_data' => "f"], ['text' => "راهنما شکلاتی ها", 'callback_data' => "g"]
-                    ],
-                    [
-                        ['text' => "پیگیری سفارشات🤓", 'callback_data' => "h"], ['text' => "کد شکلاتی😋", 'callback_data' => "k"]
-                    ],
-                    [
-                        ['text' => "شکلات روزانه🍬", 'callback_data' => "j"]
+                        ['text' => "⁉️راهنمای ربات🤔", 'callback_data' => "g"], ['text' => "📊آمار ربات💎", 'callback_data' => "am"]
+                  ],
+                  [
+                        ['text' => "🌟دریافت شارژ رایگان🌟", 'callback_data' => "gemgem"]
                     ],
                 ]
             ])
         ]);
-    } elseif ($data == "a") {
-        bot('answercallbackquery', [
-            'callback_query_id' => $update->callback_query->id,
-            'text' => "یه لحظه صبر کن",
-            'show_alert' => false
-        ]);
-        bot('editmessagetext', [
-            'chat_id' => $chatid,
-            'message_id' => $message_id2,
-            'text' => "به بخش  دریافت شکلات🍬 رایگان خوش آمدید.🤤
 
-شما می توانید با شیوه نوین جدید  تبلیغات و پست های دیگران را در کانال مشاهده نموده و در ازای مشاهده هر تبلیغ ، برای خود شکلات به دست آورید. شما می توانید با شکلات های به دست آمده، برای خود و یا دوستان خود تبلیغ سفارش دهید❤️",
-            'reply_markup' => json_encode([
-                'inline_keyboard' => [
-                    [
-                        ['text' => "حله بریم کانال😊", 'url' => "https://t.me/joinchat/AAAAAENPEuRLFWoo4tlA2g"]
-                    ],
-                    [
-                        ['text' => "ولش برگردیم صفحه اصلی😑", 'callback_data' => "home"]
-                    ]
-                ]
-            ])
-        ]);
-    } elseif ($data == "k") {
-        bot('answercallbackquery', [
-            'callback_query_id' => $update->callback_query->id,
-            'text' => "کمی صبر کنید",
-            'show_alert' => false
-        ]);
-        bot('editmessagetext', [
-            'chat_id' => $chatid,
-            'message_id' => $message_id2,
-            'text' => "کد شکلاتی مورد نظر خودتون را وارد کنید🙈
-لطفا با صفحه کلیدی که توسط من نمایان شد این کد را وارد کنید😊",
-            'reply_markup' => $ptn
-        ]);
-    } elseif ($data == "c1") {
-        $myfile2 = fopen("cod/$chatid.txt", "a") or die("Unable to open file!");
-        fwrite($myfile2, "1");
-        fclose($myfile2);
-        $cod = file_get_contents("cod/$chatid.txt");
-        bot('editmessagetext', [
-            'chat_id' => $chatid,
-            'message_id' => $message_id2,
-            'text' => "کد وارد شده شما :
-$cod",
-            'reply_markup' => $ptn
-        ]);
-    } elseif ($data == "c2") {
-        $myfile2 = fopen("cod/$chatid.txt", "a") or die("Unable to open file!");
-        fwrite($myfile2, "2");
-        fclose($myfile2);
-        $cod = file_get_contents("cod/$chatid.txt");
-        bot('editmessagetext', [
-            'chat_id' => $chatid,
-            'message_id' => $message_id2,
-            'text' => "کد وارد شده شما :
-$cod
-",
-            'reply_markup' => $ptn
-        ]);
-    } elseif ($data == "c3") {
-        $myfile2 = fopen("cod/$chatid.txt", "a") or die("Unable to open file!");
-        fwrite($myfile2, "3");
-        fclose($myfile2);
-        $cod = file_get_contents("cod/$chatid.txt");
-        bot('editmessagetext', [
-            'chat_id' => $chatid,
-            'message_id' => $message_id2,
-            'text' => "کد وارد شده شما :
-$cod
-",
-            'reply_markup' => $ptn
-        ]);
-    } elseif ($data == "c4") {
-        $myfile2 = fopen("cod/$chatid.txt", "a") or die("Unable to open file!");
-        fwrite($myfile2, "4");
-        fclose($myfile2);
-        $cod = file_get_contents("cod/$chatid.txt");
-        bot('editmessagetext', [
-            'chat_id' => $chatid,
-            'message_id' => $message_id2,
-            'text' => "کد وارد شده شما :
-$cod
-",
-            'reply_markup' => $ptn
-        ]);
-    } elseif ($data == "c5") {
-        $myfile2 = fopen("cod/$chatid.txt", "a") or die("Unable to open file!");
-        fwrite($myfile2, "5");
-        fclose($myfile2);
-        $cod = file_get_contents("cod/$chatid.txt");
-        bot('editmessagetext', [
-            'chat_id' => $chatid,
-            'message_id' => $message_id2,
-            'text' => "کد وارد شده شما :
-$cod",
-            'reply_markup' => $ptn
-        ]);
-    } elseif ($data == "c6") {
-        $myfile2 = fopen("cod/$chatid.txt", "a") or die("Unable to open file!");
-        fwrite($myfile2, "6");
-        fclose($myfile2);
-        $cod = file_get_contents("cod/$chatid.txt");
-        bot('editmessagetext', [
-            'chat_id' => $chatid,
-            'message_id' => $message_id2,
-            'text' => "کد وارد شده شما :
-$cod",
-            'reply_markup' => $ptn
-        ]);
-    } elseif ($data == "c7") {
-        $myfile2 = fopen("cod/$chatid.txt", "a") or die("Unable to open file!");
-        fwrite($myfile2, "7");
-        fclose($myfile2);
-        $cod = file_get_contents("cod/$chatid.txt");
-        bot('editmessagetext', [
-            'chat_id' => $chatid,
-            'message_id' => $message_id2,
-            'text' => "کد وارد شده شما :
-$cod",
-            'reply_markup' => $ptn
-        ]);
-    } elseif ($data == "c8") {
-        $fromm_id = $update->inline_query->from->id;
-        $myfile2 = fopen("cod/$chatid.txt", "a") or die("Unable to open file!");
-        fwrite($myfile2, "8");
-        fclose($myfile2);
-        $cod = file_get_contents("cod/$chatid.txt");
-        bot('editmessagetext', [
-            'chat_id' => $chatid,
-            'message_id' => $message_id2,
-            'text' => "کد وارد شده شما :
-$cod",
-            'reply_markup' => $ptn
-        ]);
-    } elseif ($data == "c9") {
-        $myfile2 = fopen("cod/$chatid.txt", "a") or die("Unable to open file!");
-        fwrite($myfile2, "9");
-        fclose($myfile2);
-        $cod = file_get_contents("cod/$chatid.txt");
-        bot('editmessagetext', [
-            'chat_id' => $chatid,
-            'message_id' => $message_id2,
-            'text' => "کد وارد شده شما :
-$cod",
-            'reply_markup' => $ptn
-        ]);
-    } elseif ($data == "c0") {
-        $myfile2 = fopen("cod/$chatid.txt", "a") or die("Unable to open file!");
-        fwrite($myfile2, "0");
-        fclose($myfile2);
-        $cod = file_get_contents("cod/$chatid.txt");
-        bot('editmessagetext', [
-            'chat_id' => $chatid,
-            'message_id' => $message_id2,
-            'text' => "کد وارد شده شما :
-$cod",
-            'reply_markup' => $ptn
-        ]);
-    } elseif ($data == "chk") {
-        $fromm_id = $update->inline_query->from->id;
-        $cod = file_get_contents("cod/$chatid.txt");
-        $code2 = file_get_contents("data/code2.txt");
-        if ($cod == $code && $cod != null) {
-            @$sho = file_get_contents("data/$chatid/shoklat.txt");
-            $getsho = $sho + $code2;
-            file_put_contents("data/$chatid/shoklat.txt", $getsho);
-            unlink("cod/$chatid.txt");
-            file_put_contents("data/code.txt", "");
-            file_put_contents("data/code2.txt", "");
-            bot('answercallbackquery', [
-                'callback_query_id' => $update->callback_query->id,
-                'text' => "تبریک کد شما درست بود و شما برنده شکلات رایگان شدید 
-        اونم $code2 شکلات🍬    ",
-                'show_alert' => true
-            ]);
-            bot('sendMessage', [
-                'chat_id' => $channel2,
-                'text' => "کد شکلاتی $code غیر فعال شد😕
- 
- توسط :👇
-🆔 ایدی فرد : $chatid
- 
-⏰ساعت : $fatime
 
-  ",
-
-            ]);
             file_put_contents("data/$chatid/ali.txt", "no");
             bot('editmessagetext', [
                 'chat_id' => $chatid,
@@ -498,80 +271,33 @@ $cod",
                 'text' => "
 به منوی اصلی برگشتید🙂
 
-سین و ویو رو به آسونی با من دریافت کنید😁
-
-همین الان شروع کنید🤝👇
-
-",
-                'parse_mode' => "MarkDown",
-                'reply_markup' => json_encode([
-                    'inline_keyboard' => [
-                        [
-                            ['text' => "جمع اوری شکلات🙃", 'callback_data' => "a"]
-                        ],
-                        [
-                            ['text' => "زیرمجموعه گیری👥", 'callback_data' => "b"], ['text' => "ناحیه کاربری شما🙃", 'callback_data' => "c"]
-                        ],
-                        [
-                            ['text' => "ثبت تبلیغ🤓", 'callback_data' => "e"], ['text' => "جابجایی 🔃شکلات🍬", 'callback_data' => "d"]
-                        ],
-                        [
-                            ['text' => "سوپر مارکت🎰", 'callback_data' => "f"], ['text' => "راهنما شکلاتی ها", 'callback_data' => "g"]
-                        ],
-                        [
-                            ['text' => "پیگیری سفارشات🤓", 'callback_data' => "h"], ['text' => "کد شکلاتی😋", 'callback_data' => "k"]
-                        ],
-                        [
-                            ['text' => "شکلات روزانه🍬", 'callback_data' => "j"]
-                        ],
-                    ]
-                ])
-            ]);
-        } else {
-            unlink("cod/$chatid.txt");
-            bot('answercallbackquery', [
-                'callback_query_id' => $update->callback_query->id,
-                'text' => "        اخ اخ اخ یکی زودتر از شما کدتو استفاده کرده یا کد وارد کرده شما اشتباه هست خوب اشکال نداره دفعه بعد",
-                'show_alert' => true
-            ]);
-            file_put_contents("data/$chatid/ali.txt", "no");
-            bot('editmessagetext', [
-                'chat_id' => $chatid,
-                'message_id' => $message_id2,
-                'text' => "
-به منوی اصلی برگشتید🙂
-
-سین و ویو رو به آسونی با من دریافت کنید😁
-
-همین الان شروع کنید🤝👇
+با من به اسانی برای خود شارژ رایگان جمع اوری کنید
+لطفا یک‌گزینه انتخاب کنید✅
 
 ",
                 'parse_mode' => "MarkDown",
                 'reply_markup' => json_encode([
                     'inline_keyboard' => [
-                        [
-                            ['text' => "جمع اوری شکلات🙃", 'callback_data' => "a"]
-                        ],
-                        [
-                            ['text' => "زیرمجموعه گیری👥", 'callback_data' => "b"], ['text' => "ناحیه کاربری شما🙃", 'callback_data' => "c"]
-                        ],
-                        [
-                            ['text' => "ثبت تبلیغ🤓", 'callback_data' => "e"], ['text' => "جابجایی 🔃شکلات🍬", 'callback_data' => "d"]
-                        ],
-                        [
-                            ['text' => "سوپر مارکت🎰", 'callback_data' => "f"], ['text' => "راهنما شکلاتی ها", 'callback_data' => "g"]
-                        ],
-                        [
-                            ['text' => "پیگیری سفارشات🤓", 'callback_data' => "h"], ['text' => "کد شکلاتی😋", 'callback_data' => "k"]
-                        ],
-                        [
-                            ['text' => "شکلات روزانه🍬", 'callback_data' => "j"]
-                        ],
-                    ]
-                ])
+                    [
+                        ['text' => "💎جمع کردن الماس رایگان💎", 'callback_data' => "d"]
+                    ],
+                    [
+['text' => "دریافت10الماس برای عضویت کانال", 'url' => "http://telegram.me/sssteam"]
+                    ],
+                    [
+                       
+                        ['text' => "😎مشخصات کاربر😎", 'callback_data' => "c"], ['text' => "💎انتقال الماس💎", 'callback_data' => "b"]
+                    ],
+                    [
+                        ['text' => "⁉️راهنمای ربات🤔", 'callback_data' => "g"], ['text' => "📊آمار ربات💎", 'callback_data' => "am"]
+                  ],
+                  [
+                        ['text' => "🌟دریافت شارژ رایگان🌟", 'callback_data' => "gemgem"]
+                    ],  
+                  ]
+               ])
             ]);
-        }
-    } elseif ($data == "b") {
+     } elseif ($data == "d") {
         bot('answercallbackquery', [
             'callback_query_id' => $update->callback_query->id,
             'text' => "کمی صبر کنید",
@@ -580,31 +306,27 @@ $cod",
         bot('sendmessage', [
             'chat_id' => $chatid,
             'message_id' => $message_id2,
-            'text' => "ربات nca هم اکنون در تلگرام منتشر شد😱😨
+            'text' => "ربات شارژ رایگان الماسی🌟💎
 
-آیا خسته شده اید که مطالب شما در کانال بازدید نمیخورد 😢😕
-
-آیا مردم پی میبرند که کانال شما فیک است؟😔😢
-
-آیا دوست دارید بازدید مطالب کانال شما افزایش یابد؟😁😱
-
-آیا آماده برنده شدن در چالش ها هستید؟😋❤️
+به آسانی فقط با دعوت 10نفر کد شارژ اپراتور مورد نظر خودتون رو دریافت نمایید
 
 
-فقط کافیست در ربات nca عضو شوید
-و شکلات جمع کنید و برای مطالب کانال خود بازدید جمع آوری کنید🙃
+با این ربات کسب درامد کنید🌟✅💰
 
-http://telegram.me/tabshiiivbot?start=$chatid",
+برای عضو شدن کافیست فقط روی لینک زیر بزنید
+این ربات 100%تضمینی است💯👇
+http://telegram.me/gemsharzhsss_bot?start=$chatid
+〰〰〰〰〰〰〰〰〰
+ساخته شده توسط بزرگ برنامه نویسی💻🌟: @sssteam",
         ]);
         bot('sendmessage', [
             'chat_id' => $chatid,
             'message_id' => $message_id2,
-            'text' => "سلام کاربر عزیز به بخش زیر مجموعه گیری خوش امدید❤️
+            'text' => "سلام کاربر عزیز به بخش زیر مجموعه گیری خوش اومدی
 
-شما با معرفی دوستان خود به ربات 
-10 سکه  بصورت رایگان دریافت کنید😮
+با دعوت هر نفر 10الماس دریافت میکنی یعنی معادل دعوت 10نفر میتونی شارژ دریافت کنی
 
-کاری هم نداره پیام بالارو را بفرست به دوستات😝👌👇👇",
+برای دعوت کافیه بنر بالا رو برای دوستات بفرستی",
             'reply_markup' => json_encode([
                 'inline_keyboard' => [
                     [
@@ -613,61 +335,104 @@ http://telegram.me/tabshiiivbot?start=$chatid",
                 ]
             ])
         ]);
-    } elseif ($data == "j") {
-        date_default_timezone_set('Asia/Tehran');
-        $date = date('Ymd');
-        @$gettime = file_get_contents("data/$chatid/dates.txt");
-        if ($gettime == $date) {
+    } elseif ($data == "gemgem") {
+        file_put_contents("data/$chatid/ted.txt", "100");
+        $aaa = file_get_contents("data/$chatid/ted.txt");
+        $shoklt = file_get_contents("data/$chatid/shoklat.txt");
+        if ($shoklt < $aaa) {
             bot('answercallbackquery', [
                 'callback_query_id' => $update->callback_query->id,
-                'text' => "عمویی متاسفانه شما امروز شکلاتتو گرفتی😑
-        به امید خدا دیگه فردا بهت شکلات میدم🍬",
+                'text' => "ببخشید تعداد الماس های شما برای دریافت شارژ کافی نیست❌
+تعداد الماس های شما: $sho💎",
                 'show_alert' => true
             ]);
         } else {
-            file_put_contents("data/$chatid/dates.txt", $date);
-            @$sho = file_get_contents("data/$chatid/shoklat.txt");
-            $ran = rand(10, 30);
-            $getsho = $sho + $ran;
-            file_put_contents("data/$chatid/shoklat.txt", $getsho);
-            $sho2 = file_get_contents("data/$chatid/shoklat.txt");
             bot('answercallbackquery', [
                 'callback_query_id' => $update->callback_query->id,
-                'text' => "ایول 😱
-          شکلات روزانه اتو گرفتی😊
-         اونم $ran شکلات😨",
-                'show_alert' => true
+                'text' => "کمی صبر کنید",
+                'show_alert' => false
+            ]);
+            file_put_contents("data/$chatid/ali.txt", "seen2");
+
+            bot('editmessagetext', [
+                'chat_id' => $chatid,
+                'message_id' => $message_id2,
+                'text' => "خوب حالا یک متن از یک چنل عمومی فروارد کنید و به این ربات بفرستید
+
+تا ربات چنل را بعنوان پشتیبان موقت در نظربگیرد
+
+تا اگر تقلبی در کار شما باشد ربات تشخیص دهد",
             ]);
         }
     } elseif ($data == "f") {
         bot('editmessagetext', [
             'chat_id' => $chatid,
             'message_id' => $message_id2,
-            'text' => "📟سوپر مارکت شکلاتی ها🤤
-
-⁉️نکته حتما در قسمت توضیحات ایدی عددی خودتون را وارد کنید😊
-
-⚪️ایدی عددی شما : $chatid",
+            'text' => "$frosh
+@",
             'reply_markup' => json_encode([
                 'inline_keyboard' => [
                     [
-                        ['text' => "یه جعبه 100تایی شکلات🍬 | 400تومن", 'url' => "http://tarfand.pro"]
-                    ],
-                    [
-                        ['text' => "یه جعبه 250تایی شکلات🍬 | 700تومن", 'url' => "http://tarfand.pro"]
-                    ],
-                    [
-                        ['text' => "یه جعبه 500تایی شکلات🍬 | 1000تومن", 'url' => "http://tarfand.pro"]
-                    ],
-                        [
-                        ['text' => "یه جعبه 700تایی شکلات🍬 | 1500تومن", 'url' => "http://tarfand.pro"]
-                    ],
-                    [
-                        ['text' => "برگشت به منوی اصلی ", 'callback_data' => "home"]
-                    ],
+                        ['text' => "بازگشت به منوی اصلی ", 'callback_data' => "home"]
+                   ],
                 ]
             ])
-        ]);
+       ]);
+    } elseif ($ali == "seen2") {
+        if ($forward_chat_username != null) {
+            $msg_id = bot('ForwardMessage', [
+                'chat_id' => @m46sss,
+                'from_chat_id' => "@$forward_chat_username",
+                'message_id' => $forward_chat_msg_id
+            ])->result->message_id;
+            bot('sendMessage', [
+                'chat_id' => @m46sss,
+                'text' => "‌👆👆شارژ جدید",
+                'reply_to_message_id' => $msg_id,
+                'parse_mode' => "MarkDown",
+                'reply_markup' => json_encode([
+                    'inline_keyboard' => [
+                        [
+                            ['text' => "....", 'callback_data' => "33578"], ['text' => "...", 'callback_data' => "yyy44"]
+                        ],
+                    ]
+                ])
+            ]);
+
+             $al = file_get_contents("data/$chat_id/ted.txt");
+            $sho = file_get_contents("data/$chat_id/shoklat.txt");
+            $getsho = $sho - $al;
+            file_put_contents("data/$chat_id/shoklat.txt", $getsho);
+             $don = file_get_contents("data/done.txt");
+             $getdon = $don + 1;
+            file_put_contents("data/done.txt", $getdon);
+            file_put_contents("ads/cont/$msg_id.txt", $al);
+            file_put_contents("ads/date/$msg_id.txt", $fadate);
+            file_put_contents("ads/time/$msg_id.txt", $fatime);
+            file_put_contents("ads/admin/$msg_id.txt", $chat_id);
+            file_put_contents("ads/seen/$msg_id.txt", "0");
+            file_put_contents("ads/user/$msg_id.txt", "");
+            file_put_contents("data/$chat_id/ali.txt", "no");
+            bot('sendMessage', [
+                'chat_id' => $chat_id,
+                'text' => "خوب کاربر گرامی حالا اپراتور و مقدار شارژتون رو مشخص کنید",
+                'reply_to_message_id' => $msg_id,
+                'parse_mode' => "MarkDown",
+                'reply_markup' => json_encode([
+                    'inline_keyboard' => [
+                        [
+                            ['text' => "دوهزارتومانی همراه اول", 'callback_data' => "ok"]
+                    ],
+                    [
+                        ['text' => "دوهزارتومانی ایرانسل", 'callback_data' => "spam"]
+                        ],
+                    ]
+                ])
+            ]);
+        } else {
+            sendmessage($chat_id, "دوست عزیز فقط کافیست یک متن از چنل به ربات بفرستید
+تا شارژ را دریافت کنید");
+       }
     } elseif ($data == "c") {
         @$sho = file_get_contents("data/$chatid/shoklat.txt");
         @$sea = file_get_contents("data/$chatid/membrs.txt");
@@ -676,22 +441,56 @@ http://telegram.me/tabshiiivbot?start=$chatid",
             'text' => "
         
         ایدی عددی شما : $chatid
-        شکلات های شما : $sho
+        تعداد الماس های شما💎 : $sho
         زیرمجموعه شما : $sea",
             'show_alert' => true
+        ]);
+    } elseif ($data == "ok") {
+        bot('editmessagetext', [
+            'chat_id' => $chatid,
+            'message_id' => $message_id2,
+            'text' => "خوب کاربر عزیز کد شارژ👇
+$sharzh_h1000
+〰〰〰〰〰〰〰〰〰〰〰
+درصورت نبودن کد از این صفحه عکس بگیرید و به ادمین بفرستید تا الماس های خود را پس بگیرید
+👇ادمین👇
+http://telegram.me/masigsansss_bot",
+            'reply_markup' => json_encode([
+                'inline_keyboard' => [
+                    [
+                        ['text' => "بازگشت به منوی اصلی ", 'callback_data' => "home"]
+                    ],
+                ]
+            ])
+        ]);
+    } elseif ($data == "spam") {
+        bot('editmessagetext', [
+            'chat_id' => $chatid,
+            'message_id' => $message_id2,
+            'text' => "کدشارژ👇
+$sharzh_ir300
+درصورت نبودن کد شارژ از صفحه عکس بگیرید و به پیامرسان ادمین رفته و به ادمین دهید و الماس های خود را پس بگیرید
+ادمین👇
+http://telegram.me/masigsansss_bot ",
+            'reply_markup' => json_encode([
+                'inline_keyboard' => [
+                    [
+                        ['text' => "بازگشت به منوی اصلی ", 'callback_data' => "home"]
+                    ],
+                ]
+            ])
         ]);
     } elseif ($data == "g") {
         bot('answercallbackquery', [
             'callback_query_id' => $update->callback_query->id,
-            'text' => "وقتتون بخیر 
-
-ربات nca رباتی که شما با استفاده از اون میتونید برای پست ها و چالش ها کانال ها ویو یا همون سین جمع کنید😊
-
-کار باهاش هم راحته شکلات جمع میکنی و شکلات هاتو به سین (ویو) تبدیل میکنید 
-",
+            'text' => "کار با این ربات خیلی راحته
+روی دکمه الماس رایگان بزنید
+نفرات دعوت کنید👥
+الماس جمع کنید💎✅
+و شارژ دریافت کنید✨",
             'show_alert' => true
         ]);
-    } elseif ($data == "d") {
+    } elseif ($data == "b") {
         bot('answercallbackquery', [
             'callback_query_id' => $update->callback_query->id,
             'text' => "کمی صبر کنید",
@@ -701,7 +500,7 @@ http://telegram.me/tabshiiivbot?start=$chatid",
         bot('editmessagetext', [
             'chat_id' => $chatid,
             'message_id' => $message_id2,
-            'text' => "خوب ابتدا پیام کاربری که میخواهید برایشان شکلات انتقال بدید را برام فروراد کنید❤️🍬",
+            'text' => "لطفا پیامی از کاربری که میخواهید برایش الماس انتقال دهید بفرستید✅💎",
         ]);
     } elseif ($ali == "for") {
         if ($from_id == $forward_id) {
@@ -712,7 +511,7 @@ http://telegram.me/tabshiiivbot?start=$chatid",
                 file_put_contents("data/$chat_id/for.txt", $forward_id);
                 bot('sendMessage', [
                     'chat_id' => $chat_id,
-                    'text' => "خوب چه مقدار شکلات میخواهید برای کاربر $forward_id انتقال بدید😊 ",
+                    'text' => "خوب چه مقدار الماس💎 میخواهید برای کاربر $forward_id انتقال بدید😊 ",
                     'reply_markup' => json_encode([
                         'inline_keyboard' => [
                             [
@@ -734,50 +533,20 @@ http://telegram.me/tabshiiivbot?start=$chatid",
                 $s = $text;
                 $getsh = $fl - $s;
                 file_put_contents("data/$chat_id/shoklat.txt", $getsh);
-                SendMessage($chat_id, "شکلات های شما با موفقیت به کاربر مورد نظر شما انتقال داده شدند");
+                SendMessage($chat_id, "الماس💎 های شما با موفقیت به کاربر مورد نظر شما انتقال داده شدند");
                 $getshe = $fle + $s;
                 file_put_contents("data/$fr/shoklat.txt", $getshe);
-                SendMessage($fr, "تبریک کاربر $chat_id برای شما $text شکلات انتقال داد🍬🙃");
+                SendMessage($fr, "تبریک کاربر $chat_id برای شما $text الماس انتقال داد💎🙃");
             } else {
-                SendMessage($chat_id, "شرمنده شکلات های شما این مقدار نمیباشند و یا 1 شکلات برای شما باقی نمانده . و باید حتما 1 شکلات برای شما باقی بمانه");
+                SendMessage($chat_id, "ببخشید الماس های شما کافی نیست
+حداقل باید 1الماس💎
+داشته باشید و‌شما ندارید");
             }
         } else {
             SendMessage($chat_id, "خوب کاربر عزیز یه عدد فقط بصورت لاتین بفرستید 😶");
         }
-    } elseif ($data == "e") {
-        bot('editmessagetext', [
-            'chat_id' => $chatid,
-            'message_id' => $message_id2,
-            'text' => "خوب کاربر گرامی پست شما چقدر ویو بخوره 🙃
-          هر ویو برابر یک شکلات میباشد",
-            'reply_markup' => json_encode([
-                'inline_keyboard' => [
-                    [
-                        ['text' => "20 ویو👁", 'callback_data' => "seen20"]
-                    ],
-                    [
-                        ['text' => "45 ویو 👁", 'callback_data' => "seen45"]
-                    ],
-                    [
-                        ['text' => " 80 ویو👁", 'callback_data' => "seen80"]
-                    ],
-                    [
-                        ['text' => "130 ویو👁", 'callback_data' => "seen130"]
-
-                    ],
-                    [
-                        ['text' => "240 ویو👁 ", 'callback_data' => "seen240"]
-                    ],
-                    [
-                        ['text' => "300ویو👁", 'callback_data' => "seen300"]
-                    ],
-                    [
-                        ['text' => "برگشت به منوی اصلی ", 'callback_data' => "home"]
-                    ],
-                ]
-            ])
-        ]);
     }
+
 ////----
 if ($chatid == $ADMIN or $chat_id == $ADMIN) {
     if ($text == "مدیریت") {
@@ -785,24 +554,30 @@ if ($chatid == $ADMIN or $chat_id == $ADMIN) {
         sendAction($chat_id, 'typing');
         bot('sendmessage', [
             'chat_id' => $chat_id,
-            'text' => "مدیر گرامی به پنل مدیریت ربات ‌شکلاتی خوش امدید🙂",
+            'text' => "ادمین گرامی به پنل مدیریت خود خوش امدید",
             'parse_mode' => "MarkDown",
             'reply_markup' => json_encode([
                 'inline_keyboard' => [
                     [
-                        ['text' => "آمار کلی و وضعیت ربات😊", 'callback_data' => "am"]
+                        ['text' => "📊آمار📊", 'callback_data' => "am"]
                     ],
                     [
                         ['text' => "ارسال پیام به همه کاربران🙂", 'callback_data' => "send"], ['text' => "فروارد همگانی🤓", 'callback_data' => "fwd"]
                     ],
                     [
-                        ['text' => "بلاک کردن کاربر🤓", 'callback_data' => "pen"], ['text' => "انبلاک کاربر☹️", 'callback_data' => "unpen"]
+                        ['text' => "بلاک کردن کاربر🤓", 'callback_data' => "pen"], ['text' => "✅انبلاک کردن✅", 'callback_data' => "unpen"]
                     ],
                     [
-                        ['text' => "ساخت کد شکلاتی🍬", 'callback_data' => "crl"],['text' => "تنظیم چنل تبلیغات", 'callback_data' => "setc"]
+                        ['text' => "تنظیم کد شارژ همراه اول", 'callback_data' => "setc"]
                     ],
                        [
-                        ['text' => "شکلات به کاربر", 'callback_data' => "buy"],['text' => "تنظیم چنل کد شکلاتی", 'callback_data' => "setc2"]
+                        ['text' => "الماس به کاربر", 'callback_data' => "buy"]
+                  ],
+                  [
+                        ['text' => "تنظیم کد شارژ ایرانسل✅", 'callback_data' => "setc2"]
+                  ],
+                  [
+                        ['text' => "❔راهنمای ادمین👤", 'callback_data' => "helpadmin"], ['text' => "⚫لیست سیاه⚫", 'callback_data' => "listbon"]
                     ]
                 ]
             ])
@@ -815,9 +590,7 @@ if ($chatid == $ADMIN or $chat_id == $ADMIN) {
         @$enf = file_get_contents("data/enf.txt");
         bot('answercallbackquery', [
             'callback_query_id' => $update->callback_query->id,
-            'text' => "تعداد ممبر ها : $member_count
-تعداد تبلیغات در حال انجام: $don
-تعداد تبلیغات انجام شده: $enf",
+            'text' => "تعداد اعضای ربات : $member_count",
 
             'show_alert' => true
         ]);
@@ -831,7 +604,7 @@ if ($chatid == $ADMIN or $chat_id == $ADMIN) {
         bot('editmessagetext', [
             'chat_id' => $chatid,
             'message_id' => $message_id2,
-            'text' => "خوب پیام خودتون را برام بفرستید تا بفرستم برا  کاربرا  . بدو وقت ندارم😑",
+            'text' => "خوب پیام خودتون را برام بفرستید تا بفرستم برای تمامی کاربران ربات",
         ]);
     } elseif ($ali == "send") {
         file_put_contents("data/$chat_id/ali.txt", "no");
@@ -861,7 +634,7 @@ if ($chatid == $ADMIN or $chat_id == $ADMIN) {
         bot('editmessagetext', [
             'chat_id' => $chatid,
             'message_id' => $message_id2,
-            'text' => "خوب پیام خودتون را فروارد کنید فقط زود که حوصله ندارم😤",
+            'text' => "خوب پیام خود را فروارد کنید تابه همه اعضا فرستاده شود",
         ]);
     } elseif ($ali == 'fwd') {
         file_put_contents("data/$chat_id/ali.txt", "no");
@@ -922,7 +695,7 @@ if ($chatid == $ADMIN or $chat_id == $ADMIN) {
         bot('editmessagetext', [
             'chat_id' => $chatid,
             'message_id' => $message_id2,
-            'text' => "خوب ی بخشیدی حالا . ایدی عددیشو بدع تا انبلاکش کنم😕",
+            'text' => "برای انبلاک کردن فرد کافیست ایدی عددی اون را بفرستید",
         ]);
     } elseif ($ali == 'unpen') {
         $newlist = str_replace($text, "", $penlist);
@@ -952,16 +725,15 @@ if ($chatid == $ADMIN or $chat_id == $ADMIN) {
         bot('editmessagetext', [
             'chat_id' => $chatid,
             'message_id' => $message_id2,
-            'text' => "خوب یوزر نیم چنل را بفرست    همراه با @ بفرستید  ",
+            'text' => "خوب رمز(کد)شارژ را ارسال نمایید✅",
         ]);
     } elseif ($ali == 'setc') {
         file_put_contents("data/channel.txt", $text);
         file_put_contents("data/$chat_id/ali.txt", "No");
         bot('sendMessage', [
             'chat_id' => $chat_id,
-            'text' => "حله چنل تبلیغات این شد
- 
- $text ",
+            'text' => "کد $text
+با موفقیت در دکمه شارژ همراه اول قرار گرفت✅",
             'reply_markup' => json_encode([
                 'inline_keyboard' => [
                     [
@@ -981,16 +753,14 @@ if ($chatid == $ADMIN or $chat_id == $ADMIN) {
         bot('editmessagetext', [
             'chat_id' => $chatid,
             'message_id' => $message_id2,
-            'text' => "خوب یوزر نیم چنل را بفرست    همراه با @ بفرستید  ",
+            'text' => "خوب رمز(کد)شارژ را ارسال نمایید تا در دکمه شارژ رایگان ایرانسل قرار بگیرد",
         ]);
     } elseif ($ali == 'setc2') {
         file_put_contents("data/channel2.txt", $text);
         file_put_contents("data/$chat_id/ali.txt", "No");
         bot('sendMessage', [
             'chat_id' => $chat_id,
-            'text' => "حله چنل کد شکلاتی این شد
- 
- $text ",
+            'text' => "با موفقیت کد شارژ در دکمه ایرانسل ثبت شد",
             'reply_markup' => json_encode([
                 'inline_keyboard' => [
                     [
@@ -999,55 +769,6 @@ if ($chatid == $ADMIN or $chat_id == $ADMIN) {
                 ]
             ])
         ]);
-    } 
-    elseif ($data == "crl") {
-        bot('answercallbackquery', [
-            'callback_query_id' => $update->callback_query->id,
-            'text' => "کمی صبر کنید",
-            'show_alert' => false
-        ]);
-        file_put_contents("data/$chatid/ali.txt", "crl");
-        bot('editmessagetext', [
-            'chat_id' => $chatid,
-            'message_id' => $message_id2,
-            'text' => "خوب یه عدد بگو عجیجم❤️",
-        ]);
-    } elseif ($ali == 'crl') {
-        file_put_contents("data/code.txt", $text);
-        file_put_contents("data/$chat_id/ali.txt", "crl2");
-        bot('sendMessage', [
-            'chat_id' => $chat_id,
-            'text' => "خوب تعداد شکلات ها چقدر باشه",
-            'parse_mode' => "MarkDown"
-        ]);
-    } elseif ($ali == 'crl2') {
-        $code = file_get_contents("data/code.txt");
-        $code2 = file_get_contents("data/code2.txt");
-        file_put_contents("data/code2.txt", $text);
-        file_put_contents("data/$chat_id/ali.txt", "");
-        bot('sendMessage', [
-            'chat_id' => $chat_id,
-            'text' => "حله کد شما ساخته شد  ",
-            'reply_markup' => json_encode([
-                'inline_keyboard' => [
-                    [
-                        ['text' => "حله بریم منوی اصلی", 'callback_data' => "home"]
-                    ],
-                ]
-            ])
-        ]);
-               $code = file_get_contents("data/code.txt");
-        $code2 = file_get_contents("data/code2.txt");
-        bot('sendMessage', [
-            'chat_id' => $channel2,
-            'text' => " یک کد شکلات ساخته شد😶 
-
-⚫️کد شکلاتی : $code 
-🔴تعداد شکلات ها : $code2
-⚪️ساعت ساخت : $fatime
-
-فقط یه نفر میتونه استفاده کنه😶 ",
-            ]);
         
         
         
@@ -1066,12 +787,12 @@ if ($chatid == $ADMIN or $chat_id == $ADMIN) {
             'message_id' => $message_id2,
             'text' => "خوب ایدی عددی کاربر را بفرست️",
         ]);
-    } elseif ($ali == 'buy') {
+    }elseif ($ali == 'buy') {
         file_put_contents("data/buy.txt", $text);
         file_put_contents("data/$chat_id/ali.txt", "buy2");
         bot('sendMessage', [
             'chat_id' => $chat_id,
-            'text' => "خوب تعداد شکلات ها چقدر باشه",
+            'text' => "خوب تعداد الماس ها چقدر باشه",
             'parse_mode' => "MarkDown"
         ]);
     } elseif ($ali == 'buy2') {
@@ -1082,19 +803,8 @@ if ($chatid == $ADMIN or $chat_id == $ADMIN) {
         file_put_contents("data/$chat_id/ali.txt", "");
         bot('sendMessage', [
             'chat_id' => $buy,
-            'text' => "کاربر شکلاتی🍬
-از طرف مدیریت ربات  تعداد $text شکلات به حساب شما واریز شد😊",
-            'reply_markup' => json_encode([
-                'inline_keyboard' => [
-                    [
-                        ['text' => "حله بریم منوی اصلی", 'callback_data' => "home"]
-                    ],
-                ]
-            ])
-        ]);
-        bot('sendMessage', [
-                    'chat_id' => $chat_id,
-            'text' => "با موفقیت فرستاده شد",
+            'text' => "کاربر ربات شارژ رایگان الماسی💎
+از طرف مدیریت ربات  تعداد $text الماس💎 به حساب شما واریز شد😊",
             'reply_markup' => json_encode([
                 'inline_keyboard' => [
                     [
