@@ -5,7 +5,7 @@ $token = API_KEY;
 $userbot = "KingProxy7Bot";
 $channels = "KimoLand";
 $logchchannel = "@KingProxyLog";
-$admin = 710732845;
+$admin = array("710732845","1089453634","864399107");
 $server_free_1 = file_get_contents("https://kimoss8.herokuapp.com/api/server1.php");
 $server_free_2 = file_get_contents("https://kimoss8.herokuapp.com/api/server2.php");
 $server_vip_1 = file_get_contents("https://kimoss8.herokuapp.com/api/server_vip1.php");
@@ -116,7 +116,7 @@ $tch = $truechannel->result->status;
 $btn_menu = json_encode([
   'keyboard' => [
     [['text' => "💢دریافت پروکسی💢"]],
-    [['text' => "حمایت💰"], ['text' => "🖌ارسال نظر"]],
+    [['text' => "حمایت💰"], ['text' => "پشتیبانی📞"]],
     [['text' => "راهنما🧧"], ['text' => "❔درباره ما"]],
     [['text' => "🛰اشتراک گذاری ربات🛰"]]
   ], 'resize_keyboard' => true,
@@ -140,6 +140,7 @@ $btn_getproxy = json_encode([
 $btn_free_server = json_encode([
   'keyboard' => [
     [['text' => "سرور دوم2️⃣"], ['text' => "1️⃣سرور اول"]],
+    [['text' => "سرور چهارم4️⃣"], ['text' => "3️⃣سرور سوم"]],
     [['text' => "↩️برگشت"]]
   ], 'resize_keyboard' => true,
 ]);
@@ -190,7 +191,7 @@ elseif ($textmessage == '↩️برگشت') {
   ]));
 }
 //=================Status====================\\
-elseif ($textmessage == '📊آمار ربات📊' && $from_id == $admin) {
+elseif ($textmessage == '📊آمار ربات📊' && $from_id == $admin[0]) {
   $uvis = file_get_contents('data/vips.txt');
   $usercount = 1;
   $fp = fopen("data/users.txt", 'r');
@@ -221,11 +222,11 @@ elseif ($textmessage == '📊آمار ربات📊' && $from_id == $admin) {
 🆔@$channels");
 }
 //=================FeedBack====================\\
-elseif ($textmessage == '🖌ارسال نظر') {
+elseif ($textmessage == 'پشتیبانی📞') {
   save("data/$from_id/step.txt", "feedback");
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "📖نظر خود را ارسال کنید...",
+    'text' => "پیام خود را ارسال کنید...",
     'parse_mode' => 'MarkDown',
     'reply_markup' => $btn_back
   ]));
@@ -238,7 +239,7 @@ elseif ($textmessage == '🖌ارسال نظر') {
 }
 //=================Delete Vip Account====================\\
 elseif (strpos($textmessage, "/delete_vip") !== false) {
-  if ($from_id == $admin) {
+  if ($from_id == $admin[0]) {
     $text = str_replace("/delete_vip", "", $textmessage);
     $newlist = str_replace($text, "", $vip);
     save("data/vips.txt", $newlist);
@@ -264,7 +265,7 @@ elseif ($textmessage == 'حمایت💰') {
 elseif ($textmessage == '🛰اشتراک گذاری ربات🛰') {
   var_dump(makereq('SendPhoto', [
     'chat_id' => $update->message->chat->id,
-    'photo'=>"https://s6.uupload.ir/files/banner_bmrz.png",
+    'photo'=>"https://s6.uupload.ir/files/banner_99ej.gif",
     'caption'=>"🔥ربات پروکسی ضدفلیتر تلگرام
 〰️〰️〰️〰️〰️〰️〰️
 🔹پرسرعت
@@ -339,7 +340,7 @@ elseif ($textmessage == '❔درباره ما') {
 }
 //=================Admin Panel====================\\
 elseif ($textmessage == '/botpanel')
-  if ($from_id == $admin) {
+  if ($from_id == $admin[0]) {
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
       'text' => "🔰به پنل مدیریت خوش آمدید\n\n🆔@$channels",
@@ -372,7 +373,7 @@ elseif (strpos($textmessage, "/unblock") !== false && $chat_id == $admin) {
 }
 //=================Message To All====================\\
 elseif ($textmessage == '📤ارسال همگانی')
-  if ($from_id == $admin) {
+  if ($from_id == $admin[0]) {
     save("data/$from_id/step.txt", "sendtoall");
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
@@ -394,7 +395,7 @@ elseif ($step == 'sendtoall') {
 }
 //=================Forward To All====================\\
 elseif ($textmessage == 'فوروارد همگانی📤')
-  if ($from_id == $admin) {
+  if ($from_id == $admin[0]) {
     save("data/$from_id/step.txt", "fortoall");
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
@@ -447,7 +448,7 @@ elseif ($textmessage == 'لغو حساب ویژه⚜️')
   }
 //=================Add Vip Account====================\\
 elseif (strpos($textmessage, "/add_vip") !== false) {
-  if ($from_id == $admin) {
+  if ($from_id == $admin[0]) {
     $text = str_replace("/add_vip", "", $textmessage);
     $myfile2 = fopen("data/vips.txt", 'a') or die("Unable to open file!");
     fwrite($myfile2, "$text\n");
@@ -525,6 +526,42 @@ elseif ($textmessage == 'سرور دوم2️⃣') {
 
 
 $server_free_2
+➖➖➖➖➖➖➖➖➖➖
+    
+🆔@$channels",
+    'parse_mode' => 'MarkDown',
+    'reply_markup' => $btn_back 
+  ]));
+}
+
+elseif ($textmessage == '3️⃣سرور سوم') {
+  var_dump(makereq('sendMessage', [
+    'chat_id' => $update->message->chat->id,
+    'text' => "🌀لیست پروکسی ها
+
+➖➖➖➖➖➖➖➖➖➖
+    
+
+
+$server_vip_2
+➖➖➖➖➖➖➖➖➖➖
+    
+🆔@$channels",
+    'parse_mode' => 'MarkDown',
+    'reply_markup' => $btn_back 
+  ]));
+}
+
+elseif ($textmessage == 'سرور چهارم4️⃣') {
+  var_dump(makereq('sendMessage', [
+    'chat_id' => $update->message->chat->id,
+    'text' => "🌀لیست پروکسی ها
+
+➖➖➖➖➖➖➖➖➖➖
+    
+
+
+$server_vip_1
 ➖➖➖➖➖➖➖➖➖➖
     
 🆔@$channels",
