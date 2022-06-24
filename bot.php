@@ -112,10 +112,9 @@ $fromm_id = $update->inline_query->from->id;
 $fromm_user = $update->inline_query->from->username;
 $inline_query = $update->inline_query;
 $query_id = $inline_query->id;
-$fromd_id = $update->message->from->id;
 $chandnel = "KimoLand"; //==آیدی چنل بدون @==//
 $tokenBot = API_KEY;//===توکن ربات ==//
-$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot".$tokenBot."/getChatMember?chat_id=@".$chandnel."&user_id=".$fromd_id));
+$truechannel = json_decode(file_get_contents("https://api.telegram.org/bot".$tokenBot."/getChatMember?chat_id=@".$chandnel."&user_id=".$from_id));
 $tch = $truechannel->result->status;
 //====================ᵗᶦᵏᵃᵖᵖ======================//
 if($tch != 'member' && $tch != 'creator' && $tch != 'administrator'){
