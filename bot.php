@@ -140,7 +140,6 @@ $btn_getproxy = json_encode([
 $btn_free_server = json_encode([
   'keyboard' => [
     [['text' => "سرور دوم2️⃣"], ['text' => "1️⃣سرور اول"]],
-    [['text' => "سرور چهارم4️⃣"], ['text' => "3️⃣سرور سوم"]],
     [['text' => "↩️برگشت"]]
   ], 'resize_keyboard' => true,
 ]);
