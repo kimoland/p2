@@ -1,9 +1,11 @@
 <?php
 
-$prox = json_decode(file_get_contents("https://dl.dropboxusercontent.com/s/dn0mdwhk7mjwa0k/novingram_server.json"), true);
+$prox = json_decode(file_get_contents("https://shahrokh.xyz/mobogram/prxmgr/prxmgr.php"), true);
 for ($i = 0; $i < 8; $i++) {
-    $show = $prox["login"][$i];
-    $message .= "🌐Proxy: " . "$show" . "\n\n";
+    $host = $prox[$i]["ip"];
+    $port = $prox[$i]["prt"];
+    $secret = $prox[$i]["secret"];
+    $message .= "🌐Proxy: "."https://t.me/proxy?server=$host&port=$port&secret=$secret"."\n\n";
 }
 
 ?>
