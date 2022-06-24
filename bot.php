@@ -117,13 +117,13 @@ $tokenBot = API_KEY;//===توکن ربات ==//
 $truechannel = json_decode(file_get_contents("https://api.telegram.org/bot".$tokenBot."/getChatMember?chat_id=@".$chandnel."&user_id=".$from_id));
 $tch = $truechannel->result->status;
 //====================ᵗᶦᵏᵃᵖᵖ======================//
-if($tch != 'member' && $tch != 'creator' && $tch != 'administrator'){
+elseif($tch != 'member' && $tch != 'creator' && $tch != 'administrator'){
     SendMessage($chat_id," سلام دوست عزیز برای استفاده از این ربات باید در کانال ما عضو بشی ‼️ بعد این که عضو شدی باز دکمه استارت رو بزن  ☑️
 👉🏻 /start 
 @$channel
  ");
 }
-elseif ($text == "/start") {
+if($text == "/start") {
 
         $user = file_get_contents('users.txt');
         $members = explode("\n", $user);
