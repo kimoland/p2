@@ -11,6 +11,7 @@ $server_free_2 = file_get_contents("https://kingproxy.de/p2-main/api/server2.php
 $server_vip_1 = file_get_contents("https://kingproxy.de/p2-main/api/server_vip1.php");
 $server_vip_2 = file_get_contents("https://kingproxy.de/p2-main/api/server_vip2.php");
 //=================Functions====================\\
+//=================Functions====================\\
 function makereq($method, $datas = [])
 {
   $url = "https://api.telegram.org/bot" . API_KEY . "/" . $method;
@@ -164,14 +165,14 @@ if (strpos($ban, "$from_id") !== false) {
 elseif ($textmessage == 'راهنما🧧') {
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "❗️راهنمای ربات
+    'text' => "❗️ راهنمای ربات
   
-  ⇇انقضا پروکسی ها 1 هفته یا 1 روز است
-  ⇇پروکسی های ویژه بدون اسپانسر هستند
-  ⇇پروکسی ها عادی و اسپانسری هستند
-  ⇇بخش ویژه موقتا غیرفعال است
+⇇انقضا پروکسی ها 1 هفته یا 1 روز است
+⇇پروکسی های ویژه بدون اسپانسر هستند
+⇇پروکسی ها عادی و اسپانسری هستند
+⇇بخش ویژه موقتا غیرفعال است
   
-🆔@$channels",
+🆔 @$channels",
     'parse_mode' => 'Html',
     'reply_markup' => $btn_menu,
     'resize_keyboard' => false
@@ -181,10 +182,9 @@ elseif ($textmessage == 'راهنما🧧') {
 elseif ($textmessage == '↩️برگشت') {
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "↩️از منوی زیر استفاده کنید
-  
-    🌀@$userbot
-    🆔@$channels",
+    'text' => "↩️ از منوی زیر استفاده کنید
+
+🆔 @$channels",
     'parse_mode' => 'Html',
     'reply_markup' => $btn_menu,
     'resize_keyboard' => false
@@ -206,20 +206,20 @@ elseif ($textmessage == '📊آمار ربات📊' && $from_id == $admin) {
     $avis++;
   }
   fclose($fp);
-  SendMessage($chat_id, "🛗وضعیت ربات
+  SendMessage($chat_id, "🛗 وضعیت ربات
+
+➖تعداد اعضا : $usercount
+➖اعضا ویژه : $avis
+➖آیدی ها ویژه :$uvis
   
-  ➖تعداد اعضا : $usercount
-  ➖اعضا ویژه : $avis
-  ➖آیدی ها ویژه :$uvis
+🆔 @$channels");
+  SendMessage($logchchannel, "🛗 وضعیت ربات
   
-🆔@$channels");
-  SendMessage($logchchannel, "🛗وضعیت ربات
+➖تعداد اعضا : $usercount
+➖اعضا ویژه : $avis
+➖آیدی ها ویژه :$uvis
   
-  ➖تعداد اعضا : $usercount
-  ➖اعضا ویژه : $avis
-  ➖آیدی ها ویژه :$uvis
-  
-🆔@$channels");
+🆔 @$channels");
 }
 //=================FeedBack====================\\
 elseif ($textmessage == '📞پشتیبانی') {
@@ -233,9 +233,9 @@ elseif ($textmessage == '📞پشتیبانی') {
 } elseif ($step == 'feedback') {
   save("data/$from_id/step.txt", "none");
   $feed = $textmessage;
-  SendMessage($admin, "✉️یک نظر جدید ارسال شد\n\n👤یوزرآیدی: $from_id\n💠یوزرنیم: @$username\n📝متن: $textmessage\n\n🆔@$channels");
-  SendMessage($logchchannel, "✉️یک نظر جدید ارسال شد\n\n👤یوزرآیدی: $from_id\n💠یوزرنیم: @$username\n📝متن: $textmessage\n\n🆔@$channels");
-  SendMessage($chat_id, "✅نظر شما با موفقیت ارسال شد");
+  SendMessage($admin, "✉️ یک نظر جدید ارسال شد\n\n👤 یوزرآیدی: $from_id\n💠 یوزرنیم: @$username\n📝 متن: $textmessage\n\n🆔 @$channels");
+  SendMessage($logchchannel, "✉️ یک نظر جدید ارسال شد\n\n👤 یوزرآیدی: $from_id\n💠 یوزرنیم: @$username\n📝 متن: $textmessage\n\n🆔 @$channels");
+  SendMessage($chat_id, "✅ نظر شما با موفقیت ارسال شد");
 }
 //=================Delete Vip Account====================\\
 elseif (strpos($textmessage, "/delete_vip") !== false) {
@@ -243,17 +243,17 @@ elseif (strpos($textmessage, "/delete_vip") !== false) {
     $text = str_replace("/delete_vip", "", $textmessage);
     $newlist = str_replace($text, "", $vip);
     save("data/vips.txt", $newlist);
-    SendMessage($admin, "⭕️حساب کاربر $text با موفقیت تنزل یافت");
-    SendMessage($logchchannel, "⭕️حساب کاربر $text در ربات تنزل یافت");
+    SendMessage($admin, "⭕️ حساب کاربر $text با موفقیت تنزل یافت");
+    SendMessage($logchchannel, "⭕️ حساب کاربر $text در ربات تنزل یافت");
   } else {
-    SendMessage($chat_id, "⚠️این دستور مختص ادمین است");
+    SendMessage($chat_id, "⚠️ این دستور مختص ادمین است");
   }
 }
 //=================Donate====================\\
 elseif ($textmessage == 'حمایت💰') {
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "‼️برای ادامه فعالیت ربات و تامین بخشی از هزینه های سرور میتوانید از طریق لینک زیر از ربات و تیم حمایت کنید.\n\n🆔@$channels",
+    'text' => "‼️برای ادامه فعالیت ربات و تامین بخشی از هزینه های سرور میتوانید از طریق لینک زیر از ربات و تیم حمایت کنید.\n\n🆔 @$channels",
     'parse_mode' => 'MarkDown',
     'reply_markup' => json_encode([
       'inline_keyboard' =>
@@ -266,15 +266,15 @@ elseif ($textmessage == '🛰اشتراک گذاری ربات🛰') {
   var_dump(makereq('SendPhoto', [
     'chat_id' => $update->message->chat->id,
     'photo'=>"https://s6.uupload.ir/files/banner_99ej.gif",
-    'caption'=>"🔥ربات پروکسی ضدفلیتر تلگرام
+    'caption'=>"🔥 ربات پروکسی ضدفلیتر تلگرام
 〰️〰️〰️〰️〰️〰️〰️
-🔹پرسرعت
-🔹رایگان
-🔹آپدیت آنی
-🔹بدون اسپانسر
-🔹ضدفیلتر و قوی
+🔹 پرسرعت
+🔹 رایگان
+🔹 آپدیت آنی
+🔹 بدون اسپانسر
+🔹 ضدفیلتر و قوی
 〰️〰️〰️〰️〰️〰️〰️
-🆔@$userbot",
+🆔 @$channels",
     'reply_markup' => json_encode([
       'inline_keyboard' =>
       [[['text' => "🔸ورود به ربات🔸", 'url' => "https://t.me/$userbot"]]]
@@ -287,7 +287,7 @@ elseif ($tch != 'member' && $tch != 'creator' && $tch != 'administrator') {
     'chat_id' => $update->message->chat->id,
     'text' => "📛 برای حمایت از ما و همچنان ربات ابتدا وارد کانال زیر بشید 👇
 
-  🆔@$channels
+  🆔 @$channels
   
   ✅ سپس روی JOIN بزنید و به ربات برگشته عبارت 👇
   
@@ -315,7 +315,7 @@ elseif ($textmessage == '/start') {
   }
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "💥به ربات کینگ پروکسی خوش اومدی\n💫دریافت رایگان پروکسی پرسرعت تلگرام\n\n🆔@$channels",
+    'text' => "💥 به ربات کینگ پروکسی خوش اومدی\n💫 دریافت رایگان پروکسی پرسرعت تلگرام\n\n🆔 @$channels",
     'parse_mode' => 'Html',
     'reply_markup' => $btn_menu
   ]));
@@ -324,7 +324,7 @@ elseif ($textmessage == '/start') {
 elseif ($textmessage == '❔درباره ما') {
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "👤درباره ما
+    'text' => "👤 درباره ما
 
 ↯طراحی: KingNetwork
 ↯سرور: Exclusive
@@ -332,7 +332,7 @@ elseif ($textmessage == '❔درباره ما') {
 ↯لینک: نیم بها
 ↯حمایت: دونیت
   
-🆔@$channels",
+🆔 @$channels",
     'parse_mode' => 'Html',
     'reply_markup' => $btn_menu,
     'resize_keyboard' => false
@@ -343,7 +343,7 @@ elseif ($textmessage == '/botpanel')
   if ($from_id == $admin) {
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
-      'text' => "🔰به پنل مدیریت خوش آمدید\n\n🆔@$channels",
+      'text' => "🔰 به پنل مدیریت خوش آمدید\n\n🆔 @$channels",
       'parse_mode' => 'MarkDown',
       'reply_markup' => $btn_menu_admin
     ]));
@@ -357,8 +357,8 @@ elseif (strpos($textmessage, "/block") !== false && $chat_id == $admin) {
     $myfile2 = fopen("banlist.txt", "a") or die("Unable to open file!");
     fwrite($myfile2, "$bban\n");
     fclose($myfile2);
-    SendMessage($chat_id, "⭕️کاربر $bban با موفقیت مسدود شد");
-    SendMessage($logchchannel, "⭕️کاربر $bban در ربات مسدود شد");
+    SendMessage($chat_id, "⭕️ کاربر $bban با موفقیت مسدود شد");
+    SendMessage($logchchannel, "⭕️ کاربر $bban در ربات مسدود شد");
   }
 }
 //=================User Unban====================\\
@@ -367,8 +367,8 @@ elseif (strpos($textmessage, "/unblock") !== false && $chat_id == $admin) {
   if ($unbban != '') {
     $newlist = str_replace($unbban, "", "banlist.txt");
     save("banlist.txt", $newlist);
-    SendMessage($chat_id, "♻️کاربر $bban با موفقیت از مسدودیت خارج شد");
-    SendMessage($logchchannel, "♻️کاربر $bban در ربات رفع مسدودیت شد");
+    SendMessage($chat_id, "♻️ کاربر $bban با موفقیت از مسدودیت خارج شد");
+    SendMessage($logchchannel, "♻️ کاربر $bban در ربات رفع مسدودیت شد");
   }
 }
 //=================Message To All====================\\
@@ -377,7 +377,7 @@ elseif ($textmessage == '📤ارسال همگانی')
     save("data/$from_id/step.txt", "sendtoall");
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
-      'text' => "📝پیام خود را ارسال کنید...",
+      'text' => "📝 پیام خود را ارسال کنید...",
       'parse_mode' => 'MarkDown',
       'reply_markup' => $btn_back
     ]));
@@ -391,7 +391,7 @@ elseif ($step == 'sendtoall') {
     $ckar = fgets($fp);
     SendMessage($ckar, $textmessage);
   }
-  SendMessage($chat_id, "✅عملیات با موفقیت به پایان رسید");
+  SendMessage($chat_id, "✅ عملیات با موفقیت به پایان رسید");
 }
 //=================Forward To All====================\\
 elseif ($textmessage == 'فوروارد همگانی📤')
@@ -399,7 +399,7 @@ elseif ($textmessage == 'فوروارد همگانی📤')
     save("data/$from_id/step.txt", "fortoall");
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
-      'text' => "📝پیام خود را فوروارد کنید...",
+      'text' => "📝 پیام خود را فوروارد کنید...",
       'parse_mode' => 'MarkDown',
       'reply_markup' => $btn_back
     ]));
@@ -415,34 +415,34 @@ elseif ($step == 'fortoall') {
   }
   makereq('sendMessage', [
     'chat_id' => $chat_id,
-    'text' => "✅عملیات با موفقیت به پایان رسید",
+    'text' => "✅ عملیات با موفقیت به پایان رسید",
   ]);
 }
 //=================Block====================\\
 elseif ($textmessage == '❌بلاک')
   if ($chat_id == $admin) {
-    SendMessage($chat_id, "❗️روش بلاک کردن کاربر در ربات\n\n🔅/block USERID\n\n〽️به جای USERID آیدی عددی کاربر موردنظر را بگذارید\n\n🆔@$channels");
+    SendMessage($chat_id, "❗️ روش بلاک کردن کاربر در ربات\n\n🔅 /block USERID\n\n〽️ به جای USERID آیدی عددی کاربر موردنظر را بگذارید\n\n🆔 @$channels");
   } else {
     SendMessage($chat_id, "❗️شما ادمین ربات نیستید❗️");
   }
 //=================UnBlock====================\\
 elseif ($textmessage == 'آنبلاک⭕️')
   if ($chat_id == $admin) {
-    SendMessage($chat_id, "❗️روش آنبلاک کردن کاربر در ربات\n\n🔅/unblock USERID\n\n〽️به جای USERID آیدی عددی کاربر موردنظر را بگذارید\n\n🆔@$channels");
+    SendMessage($chat_id, "❗️ روش آنبلاک کردن کاربر در ربات\n\n 🔅/unblock USERID\n\n〽️ به جای USERID آیدی عددی کاربر موردنظر را بگذارید\n\n🆔 @$channels");
   } else {
     SendMessage($chat_id, "❗️شما ادمین ربات نیستید❗️");
   }
 //=================Add Vip Account====================\\
 elseif ($textmessage == '⚜️ویژه کردن حساب')
   if ($chat_id == $admin) {
-    SendMessage($chat_id, "🔰روش ویژه کردن کاربر در ربات\n\n🔅/add_vip USERID\n\n〽️به جای USERID آیدی عددی کاربر موردنظر را بگذارید\n\n🆔@$channels");
+    SendMessage($chat_id, "🔰 روش ویژه کردن کاربر در ربات\n\n🔅 /add_vip USERID\n\n〽️ به جای USERID آیدی عددی کاربر موردنظر را بگذارید\n\n🆔 @$channels");
   } else {
     SendMessage($chat_id, "❗️شما ادمین ربات نیستید❗️");
   }
 //=================UnBlock====================\\
 elseif ($textmessage == 'لغو حساب ویژه⚜️')
   if ($chat_id == $admin) {
-    SendMessage($chat_id, "🔰روش لغو حساب ویژه کاربر در ربات\n\n🔅/delete_vip USERID\n\n〽️به جای USERID آیدی عددی کاربر موردنظر را بگذارید\n\n🆔@$channels");
+    SendMessage($chat_id, "🔰 روش لغو حساب ویژه کاربر در ربات\n\n🔅 /delete_vip USERID\n\n〽️ به جای USERID آیدی عددی کاربر موردنظر را بگذارید\n\n🆔 @$channels");
   } else {
     SendMessage($chat_id, "❗️شما ادمین ربات نیستید❗️");
   }
@@ -453,15 +453,15 @@ elseif (strpos($textmessage, "/add_vip") !== false) {
     $myfile2 = fopen("data/vips.txt", 'a') or die("Unable to open file!");
     fwrite($myfile2, "$text\n");
     fclose($myfile2);
-    SendMessage($chat_id, "🔱حساب کاربر $text با موفقیت ویژه شد");
-    SendMessage($logchchannel, "🔱حساب کاربر $text در ربات ویژه شد");
+    SendMessage($chat_id, "🔱 حساب کاربر $text با موفقیت ویژه شد");
+    SendMessage($logchchannel, "🔱 حساب کاربر $text در ربات ویژه شد");
   }
 }
 //=================Get Proxy====================\\
 elseif ($textmessage == '💢دریافت پروکسی💢') {
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "🔥نوع پروکسی را انتخاب کنید",
+    'text' => "🔥 نوع پروکسی را انتخاب کنید",
     'parse_mode' => 'MarkDown',
     'reply_markup' => $btn_getproxy
   ]));
@@ -471,28 +471,28 @@ elseif ($textmessage == '⚜️بخش ویژه⚜️')
   if (strpos($uvip, "$from_id") !== false) {
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
-      'text' => "✅سرور مورد نظر را انتخاب کنید",
+      'text' => "✅ سرور مورد نظر را انتخاب کنید",
       'parse_mode' => 'MarkDown',
       'reply_markup' => $btn_vip_server
     ]));
   } else {
-    $textvip = "❗️حساب شما رایگان است
+    $textvip = "❗️ حساب شما رایگان است
 ➖➖➖➖➖➖➖➖➖➖➖
 مزایا حساب ویژه:
 ↯پروکسی های پرسرعت
 ↯پروکسی های بدون اسپانسر
 ↯پروکسی های نیم بها
 ➖➖➖➖➖➖➖➖➖➖➖
-⚠️بخش ویژه برای عموم کاربران غیرفعال است
+⚠️ بخش ویژه برای عموم کاربران غیرفعال است
     
-🆔@$channels";
+🆔 @$channels";
     SendMessage($chat_id, $textvip);
   }
 //=================Get Proxy Free====================\\
 elseif ($textmessage == '🔰بخش عادی🔰') {
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "✅سرور مورد نظر را انتخاب کنید",
+    'text' => "✅ سرور مورد نظر را انتخاب کنید",
     'parse_mode' => 'MarkDown',
     'reply_markup' => $btn_free_server
   ]));
@@ -501,10 +501,9 @@ elseif ($textmessage == '🔰بخش عادی🔰') {
 elseif ($textmessage == '1️⃣سرور اول') {
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "🌀لیست پروکسی ها
+    'text' => "🌀 لیست پروکسی ها
 
 ➖➖➖➖➖➖➖➖➖➖
-    
 
 
 $server_free_1
@@ -519,10 +518,9 @@ $server_free_1
 elseif ($textmessage == 'سرور دوم2️⃣') {
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "🌀لیست پروکسی ها
+    'text' => "🌀 لیست پروکسی ها
 
 ➖➖➖➖➖➖➖➖➖➖
-    
 
 
 $server_free_2
@@ -537,10 +535,9 @@ $server_free_2
 elseif ($textmessage == '3️⃣سرور سوم') {
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "🌀لیست پروکسی ها
+    'text' => "🌀 لیست پروکسی ها
 
 ➖➖➖➖➖➖➖➖➖➖
-    
 
 
 $server_vip_2
@@ -555,10 +552,9 @@ $server_vip_2
 elseif ($textmessage == 'سرور چهارم4️⃣') {
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
-    'text' => "🌀لیست پروکسی ها
+    'text' => "🌀 لیست پروکسی ها
 
 ➖➖➖➖➖➖➖➖➖➖
-    
 
 
 $server_vip_1
@@ -574,10 +570,9 @@ elseif ($textmessage == '🔆سرور بدون اسپانسر🔆')
   if (strpos($uvip, "$from_id") !== false) {
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
-      'text' => "🌀لیست پروکسی ها
+      'text' => "🌀 لیست پروکسی ها
 
 ➖➖➖➖➖➖➖➖➖➖
-          
       
       
 $server_vip_2
@@ -596,16 +591,15 @@ elseif ($textmessage == '⚡️سرور پر سرعت⚡️')
   if (strpos($uvip, "$from_id") !== false) {
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
-      'text' => "🌀لیست پروکسی ها
+      'text' => "🌀 لیست پروکسی ها
 
 ➖➖➖➖➖➖➖➖➖➖
-          
       
       
 $server_vip_1
 ➖➖➖➖➖➖➖➖➖➖
           
-🆔@$channels",
+🆔 @$channels",
       'parse_mode' => 'MarkDown',
       'reply_markup' => $btn_back
     ]));
