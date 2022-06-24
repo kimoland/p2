@@ -116,7 +116,7 @@ $tch = $truechannel->result->status;
 $btn_menu = json_encode([
   'keyboard' => [
     [['text' => "💢دریافت پروکسی💢"]],
-    [['text' => "حمایت💰"], ['text' => "پشتیبانی📞"]],
+    [['text' => "حمایت💰"], ['text' => "📞پشتیبانی"]],
     [['text' => "راهنما🧧"], ['text' => "❔درباره ما"]],
     [['text' => "🛰اشتراک گذاری ربات🛰"]]
   ], 'resize_keyboard' => true,
@@ -191,7 +191,7 @@ elseif ($textmessage == '↩️برگشت') {
   ]));
 }
 //=================Status====================\\
-elseif ($textmessage == '📊آمار ربات📊' && $from_id == $admin[0]) {
+elseif ($textmessage == '📊آمار ربات📊' && $from_id == $admin[0] || $from_id == $admin[1] || $from_id == $admin[2]) {
   $uvis = file_get_contents('data/vips.txt');
   $usercount = 1;
   $fp = fopen("data/users.txt", 'r');
@@ -222,7 +222,7 @@ elseif ($textmessage == '📊آمار ربات📊' && $from_id == $admin[0]) {
 🆔@$channels");
 }
 //=================FeedBack====================\\
-elseif ($textmessage == 'پشتیبانی📞') {
+elseif ($textmessage == '📞پشتیبانی') {
   save("data/$from_id/step.txt", "feedback");
   var_dump(makereq('sendMessage', [
     'chat_id' => $update->message->chat->id,
@@ -239,7 +239,7 @@ elseif ($textmessage == 'پشتیبانی📞') {
 }
 //=================Delete Vip Account====================\\
 elseif (strpos($textmessage, "/delete_vip") !== false) {
-  if ($from_id == $admin[0]) {
+  if ($from_id == $admin[0] || $from_id == $admin[1] || $from_id == $admin[2]) {
     $text = str_replace("/delete_vip", "", $textmessage);
     $newlist = str_replace($text, "", $vip);
     save("data/vips.txt", $newlist);
@@ -340,7 +340,7 @@ elseif ($textmessage == '❔درباره ما') {
 }
 //=================Admin Panel====================\\
 elseif ($textmessage == '/botpanel')
-  if ($from_id == $admin[0]) {
+  if ($from_id == $admin[0] || $from_id == $admin[1] || $from_id == $admin[2]) {
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
       'text' => "🔰به پنل مدیریت خوش آمدید\n\n🆔@$channels",
@@ -373,7 +373,7 @@ elseif (strpos($textmessage, "/unblock") !== false && $chat_id == $admin) {
 }
 //=================Message To All====================\\
 elseif ($textmessage == '📤ارسال همگانی')
-  if ($from_id == $admin[0]) {
+  if ($from_id == $admin[0] || $from_id == $admin[1] || $from_id == $admin[2]) {
     save("data/$from_id/step.txt", "sendtoall");
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
@@ -395,7 +395,7 @@ elseif ($step == 'sendtoall') {
 }
 //=================Forward To All====================\\
 elseif ($textmessage == 'فوروارد همگانی📤')
-  if ($from_id == $admin[0]) {
+  if ($from_id == $admin[0] || $from_id == $admin[1] || $from_id == $admin[2]) {
     save("data/$from_id/step.txt", "fortoall");
     var_dump(makereq('sendMessage', [
       'chat_id' => $update->message->chat->id,
@@ -448,7 +448,7 @@ elseif ($textmessage == 'لغو حساب ویژه⚜️')
   }
 //=================Add Vip Account====================\\
 elseif (strpos($textmessage, "/add_vip") !== false) {
-  if ($from_id == $admin[0]) {
+  if ($from_id == $admin[0] || $from_id == $admin[1] || $from_id == $admin[2]) {
     $text = str_replace("/add_vip", "", $textmessage);
     $myfile2 = fopen("data/vips.txt", 'a') or die("Unable to open file!");
     fwrite($myfile2, "$text\n");
