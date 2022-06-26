@@ -55,6 +55,7 @@ if($textmessage == '/start'){
 }elseif(filter_var($textmessage, FILTER_VALIDATE_URL, FILTER_NULL_ON_FAILURE)){
     
     $data = json_decode(file_get_contents('https://ytytd.herokuapp.com/getVideo?url='.urlencode($textmessage)),true);
+    
         $img = $data['0']['thumbnail'];
         $title = $data['0']['title'];
         $channel = $data['0']['channel'];
@@ -63,6 +64,8 @@ if($textmessage == '/start'){
         $size = $data['1']['0']['size'];
         $value2 = $data['1']['1']['value'];
         $size2 = $data['1']['1']['size'];
+        $dl = file_get_contents('https://ytytd.herokuapp.com/download?url='.urlencode($textmessage).'v=1080p&f=mp4');
+        $dl2 = file_get_contents('https://ytytd.herokuapp.com/download?url='.urlencode($textmessage).'v=720p&f=mp4');
         bot('sendphoto', [
             'chat_id' => $chat_id,
             'photo' => $img,
@@ -72,8 +75,8 @@ RunTime: $time
             ",
           'reply_markup'=> json_encode([
              'inline_keyboard'=>[
-[['text'=>"$value ($size)",'url'=>"https://ytytd.herokuapp.com"]],
-[['text'=>"$value2 ($size2)",'url'=>"https://ytytd.herokuapp.com"]]
+[['text'=>"$value ($size)",'url'=>"$dl"]],
+[['text'=>"$value2 ($size2)",'url'=>"$dl2"]]
 ]])
 	 ]);
 
